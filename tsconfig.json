@@ -3,8 +3,8 @@
     "baseUrl": "./",
     "outDir": "./dist",
     "paths": {
-      "@components/*": [
-        "src/components/*"
+      "@ui-components/*": [
+        "src/ui-components/*"
       ],
       "@assets/*": [
         "src/assets/*"
@@ -21,8 +21,8 @@
     },
     "jsx": "react-jsx",
     "esModuleInterop": true,
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "module": "node16",
+    "moduleResolution": "bundler"
   },
   "include": [
     "**/*.ts",
