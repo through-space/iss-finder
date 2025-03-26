@@ -1,4 +1,4 @@
-# \<Project Name>
+# 🦄🦄 New Project 🦄🦄
 
 ## Description 
 ...

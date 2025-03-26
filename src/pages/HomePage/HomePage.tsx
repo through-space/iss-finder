@@ -18,7 +18,7 @@ export const HomePage: FC = () => {
 
 	return (
 		<FeaturesListLayout>
-			<h1>BlaBla Template</h1>
+			<h1>🦄🦄 New Project 🦄🦄</h1>
 			<PackageList packageIDs={packages} />
 			<div className="card">
 				<button onClick={() => setCount((count) => count + 1)}>
