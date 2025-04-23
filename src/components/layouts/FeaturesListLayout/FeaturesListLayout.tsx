@@ -2,7 +2,7 @@ import { FC, ReactNode } from "react";
 import {
 	FeaturesListLayoutWrapper,
 	FeaturesListWrapper,
-} from "@ui-components/layouts/FeaturesListLayout/FeaturesListLayoutStyledComponents";
+} from "../../layouts/FeaturesListLayout/FeaturesListLayoutStyledComponents";
 
 export const FeaturesListLayout: FC<{ children?: ReactNode }> = ({
 	children,

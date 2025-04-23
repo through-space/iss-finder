@@ -1,17 +1,30 @@
 // Map.tsx
-import React from "react";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import React, { FC } from "react";
+import { MapContainer, TileLayer } from "react-leaflet";
+import { IMapProps } from "./MapInterfaces";
+import { DEFAULT_MAP_PROPS } from "./MapConsts";
 
-export default function Map() {
+export const Map: FC<IMapProps> = (props) => {
+	const {
+		center = DEFAULT_MAP_PROPS.center,
+		zoom = DEFAULT_MAP_PROPS.zoom,
+		markers,
+	} = props;
+
+	const mapCenter = center ?? DEFAULT_MAP_PROPS.center;
+
 	return (
-		<MapContainer center={[51.505, -0.09]} zoom={1} scrollWheelZoom={false}>
+		<MapContainer
+			center={[mapCenter?.latitude, mapCenter?.longitude]}
+			zoom={zoom}
+			scrollWheelZoom={false}
+		>
 			<TileLayer
 				attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 				url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 			/>
-			<Marker position={[51.505, -0.09]}>
-				<Popup>This is a popup</Popup>
-			</Marker>
+
+			{markers}
 		</MapContainer>
 	);
-}
+};
