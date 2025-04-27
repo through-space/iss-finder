@@ -4,7 +4,7 @@ import deviceIcon from "@assets/icons/house-color-icon.svg";
 
 const defaultMapIconSettings: IconOptions = {
 	iconUrl: "",
-	iconSize: [38, 95],
+	iconSize: [20, 20],
 	// iconAnchor: [22, 94],
 	popupAnchor: [-3, -76],
 	// shadowUrl: 'my-icon-shadow.png',

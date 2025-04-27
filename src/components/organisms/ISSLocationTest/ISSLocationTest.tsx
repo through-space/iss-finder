@@ -1,36 +1,24 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC } from "react";
 import { IISSLocationTestProps } from "./ISSLocationTestInterfaces";
 import { ISSLocationTestWrapper } from "./ISSLocationTestStyledComponents";
-import { IGeoPosition } from "../../../types/positionTypes";
-import { deviceLocationService } from "@services/device-location/deviceLocation";
-import {
-	UPDATE_ISS_POSITION_INTERVAL,
-	updateISSLocation,
-} from "./ISSLocationTestConsts";
 import { Map } from "../../molecules/Map/Map";
 import { Marker, Popup } from "react-leaflet";
 import { DeviceIcon, ISSIcon } from "../../atoms/MapIcons/ISSIcons";
+import { useIssStateStore } from "@stores/issStateStore/issStateStore";
+import { useIssTracker } from "@hooks/useIssTracker";
+import { useDeviceTracker } from "@hooks/useDeviceTracker";
+import { useDeviceStateStore } from "@stores/deviceStateStore/deviceStateStore";
 
-export const ISSLocationTest: FC<IISSLocationTestProps> = (props) => {
-	const [issPosition, setIssPosition] = useState<IGeoPosition>(null);
-	const [devicePosition, setDevicePosition] = useState<IGeoPosition>(null);
-	const updateTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+export const ISSLocationTest: FC<IISSLocationTestProps> = () => {
+	useIssTracker();
+	useDeviceTracker();
 
-	useEffect(() => {
-		updateTimer.current = setInterval(() => {
-			updateISSLocation(setIssPosition);
-		}, UPDATE_ISS_POSITION_INTERVAL);
-
-		updateISSLocation(setIssPosition);
-
-		deviceLocationService.getDeviceLocation().then((geoLocation) => {
-			setDevicePosition(geoLocation);
-		});
-
-		fetch("https://dog.ceo/api/breeds/image/random").then((data) =>
-			console.log(data),
-		);
-	}, []);
+	const issPosition = useIssStateStore((state) => {
+		return state.currentPosition;
+	});
+	const devicePosition = useDeviceStateStore((state) => {
+		return state.position;
+	});
 
 	// TODO: move Markers to Separate components?
 	// TODO: Common component for MapMarker?
