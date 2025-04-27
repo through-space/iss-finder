@@ -17,6 +17,12 @@
       ],
       "@config/*": [
         "src/config/*"
+      ],
+      "@common-types/*": [
+        "src/types/*"
+      ],
+      "@stores/*": [
+        "src/stores/*"
       ]
     },
     "jsx": "react-jsx",
