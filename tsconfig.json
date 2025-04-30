@@ -23,6 +23,9 @@
       ],
       "@stores/*": [
         "src/stores/*"
+      ],
+      "@features/*": [
+        "src/features/*"
       ]
     },
     "jsx": "react-jsx",

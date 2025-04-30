@@ -1,9 +1,9 @@
 import { useDeviceStateStore } from "@stores/deviceStateStore/deviceStateStore";
 import { useIssStateStore } from "@stores/issStateStore/issStateStore";
 import { Marker, Popup } from "react-leaflet";
-import { DeviceIcon, ISSIcon } from "../../components/atoms/MapIcons/ISSIcons";
+import { DeviceIcon, ISSIcon } from "@ui-components/atoms/MapIcons/ISSIcons";
 import React from "react";
-import { Map } from "../../components/molecules/Map/Map";
+import { Map } from "@ui-components/molecules/Map/Map";
 
 export const WorldMap = () => {
 	const issPosition = useIssStateStore((state) => {
