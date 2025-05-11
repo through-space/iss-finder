@@ -10,9 +10,8 @@ export interface IISVisibleTestCase {
 	expected: boolean;
 }
 
-export interface IGMapsConverterTestCase {
+export interface IISSVisibleLocation {
 	name: string;
-	input: string;
-	expected?: IGeoPosition | string;
-	type: ETestCaseType;
+	gmapsPosition?: string;
+	position: IGeoPosition;
 }

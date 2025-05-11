@@ -7,7 +7,7 @@ import { WorldMap } from "@features/WorldMap/WorldMap";
 export const HomePage: FC = () => {
 	return (
 		<FeaturesListLayout>
-			<h1>🛰️ ISS Finder 🛰</h1>
+			<h1> 🛰️ ISS Finder 🛰️</h1>
 			<IssTrackerProvider>
 				<DeviceTrackerProvider>
 					<WorldMap />

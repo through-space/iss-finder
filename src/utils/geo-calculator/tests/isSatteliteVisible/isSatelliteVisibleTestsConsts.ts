@@ -29,7 +29,9 @@ export const getGeoPositionFromGMapsFormat = (
 
 			const absDegree = Math.abs(degree);
 			if (absDegree < 0 || absDegree > 180) {
-				throwError(EGeoCalculatorErrorType.OUT_OF_BOUNDS_ANGLE);
+				throwError(
+					EGeoCalculatorErrorType.CONVERSION_OUT_OF_BOUNDS_ANGLE,
+				);
 			}
 
 			return degree;
@@ -39,4 +41,17 @@ export const getGeoPositionFromGMapsFormat = (
 		latitude,
 		longitude,
 	};
+};
+
+export const getRandomPosition = (): IGeoPosition => {
+	const randomAngle = () => Math.random() * 360 - 180;
+
+	return {
+		latitude: randomAngle(),
+		longitude: randomAngle(),
+	};
+};
+
+export const getOppositeAngle = (degrees: number): number => {
+	return ((degrees + 360) % 360) - 180;
 };

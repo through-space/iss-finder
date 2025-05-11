@@ -1,5 +1,5 @@
 import { IGeoCalculator } from "./geoCalculatorInterfaces";
-import { isSatelliteVisible } from "./geoCalculatorConsts";
+import { getErrorMessage, isSatelliteVisible } from "./geoCalculatorConsts";
 
 export const geoCalculator: IGeoCalculator = {
 	isSatelliteVisible,
