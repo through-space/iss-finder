@@ -10,10 +10,7 @@ import {
 	EIsSatelliteVisibleLocation,
 	testLocations,
 } from "@utils/geo-calculator/tests/getVisibilityScore/getVisibilityScoreTestCases";
-import {
-	getVisibilityScore,
-	isOnSameHemisphere,
-} from "@utils/geo-calculator/geoCalculatorConsts";
+import { isOnSameHemisphere } from "@utils/geo-calculator/geoCalculatorConsts";
 import { IGeoPosition } from "@common-types/positionTypes";
 
 describe("Testing GMapsPosition Converter", () => {
@@ -181,13 +178,18 @@ describe("Testing getVisibilityScore()", () => {
 		).toBe(0);
 	});
 
-	// test("Same Location", () => {
-	// 	const location = testLocations[EIsSatelliteVisibleLocation.JLM];
-	// 	expect(
-	// 		geoCalculator.getVisibilityScore({
-	// 			devicePosition: location.position,
-	// 			satellitePosition: location.position,
-	// 		}),
-	// 	).toBe(1);
-	// });
+	test("Doesn't meet required Conditions", () => {
+		const location = getRandomPosition();
+		const oppositeLocation: IGeoPosition = {
+			latitude: getOppositeAngle(location.latitude),
+			longitude: getOppositeAngle(location.longitude),
+		};
+		expect(
+			geoCalculator.getVisibilityScore({
+				devicePosition: location,
+				satellitePosition: oppositeLocation,
+				requiredConditions: [isOnSameHemisphere],
+			}),
+		).toBe(0);
+	});
 });
