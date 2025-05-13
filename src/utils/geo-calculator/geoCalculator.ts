@@ -1,7 +1,7 @@
 import { IGeoCalculator } from "./geoCalculatorInterfaces";
-import { getErrorMessage, isSatelliteVisible } from "./geoCalculatorConsts";
+import { getErrorMessage, getVisibilityScore } from "./geoCalculatorConsts";
 
 export const geoCalculator: IGeoCalculator = {
-	isSatelliteVisible,
+	getVisibilityScore,
 	getErrorMessage,
 };

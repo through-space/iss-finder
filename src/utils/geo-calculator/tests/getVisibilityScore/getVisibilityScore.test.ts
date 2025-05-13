@@ -3,14 +3,17 @@ import {
 	getGeoPositionFromGMapsFormat,
 	getOppositeAngle,
 	getRandomPosition,
-} from "./isSatelliteVisibleTestsConsts";
+} from "./getVisibilityScoreTestConsts";
 import { EGeoCalculatorErrorType } from "../../geoCalculatorInterfaces";
 import { geoCalculator } from "@utils/geo-calculator/geoCalculator";
 import {
 	EIsSatelliteVisibleLocation,
 	testLocations,
-} from "@utils/geo-calculator/tests/isSatteliteVisible/isSatelliteVisibleTestCases";
-import { isOnSameHemisphere } from "@utils/geo-calculator/geoCalculatorConsts";
+} from "@utils/geo-calculator/tests/getVisibilityScore/getVisibilityScoreTestCases";
+import {
+	getVisibilityScore,
+	isOnSameHemisphere,
+} from "@utils/geo-calculator/geoCalculatorConsts";
 import { IGeoPosition } from "@common-types/positionTypes";
 
 describe("Testing GMapsPosition Converter", () => {
@@ -87,13 +90,21 @@ describe("Testing Opposite Location", () => {
 describe("Testing isOnSameHemisphere()", () => {
 	test("Same Location", () => {
 		const location = testLocations[EIsSatelliteVisibleLocation.JLM];
-		expect(isOnSameHemisphere(location.position, location.position)).toBe(
-			true,
-		);
+		expect(
+			isOnSameHemisphere({
+				devicePosition: location.position,
+				satellitePosition: location.position,
+			}),
+		).toBe(true);
 	});
 	test("Same Random Location", () => {
 		const location = getRandomPosition();
-		expect(isOnSameHemisphere(location, location)).toBe(true);
+		expect(
+			isOnSameHemisphere({
+				devicePosition: location,
+				satellitePosition: location,
+			}),
+		).toBe(true);
 	});
 
 	test("Same Hemisphere", () => {
@@ -102,7 +113,12 @@ describe("Testing isOnSameHemisphere()", () => {
 		const location2 =
 			testLocations[EIsSatelliteVisibleLocation.NEW_DELHI].position;
 
-		expect(isOnSameHemisphere(location1, location2)).toBe(true);
+		expect(
+			isOnSameHemisphere({
+				devicePosition: location1,
+				satellitePosition: location2,
+			}),
+		).toBe(true);
 	});
 
 	test("Same Hemisphere (far)", () => {
@@ -111,7 +127,12 @@ describe("Testing isOnSameHemisphere()", () => {
 		const location2 =
 			testLocations[EIsSatelliteVisibleLocation.PHILIPPINES].position;
 
-		expect(isOnSameHemisphere(location1, location2)).toBe(true);
+		expect(
+			isOnSameHemisphere({
+				devicePosition: location1,
+				satellitePosition: location2,
+			}),
+		).toBe(true);
 	});
 
 	test("Opposite Locations", () => {
@@ -122,7 +143,12 @@ describe("Testing isOnSameHemisphere()", () => {
 			longitude: getOppositeAngle(location1.longitude),
 		};
 
-		expect(isOnSameHemisphere(location1, location2)).toBe(false);
+		expect(
+			isOnSameHemisphere({
+				devicePosition: location1,
+				satellitePosition: location2,
+			}),
+		).toBe(false);
 	});
 
 	test("Another Hemisphere", () => {
@@ -131,6 +157,37 @@ describe("Testing isOnSameHemisphere()", () => {
 		const location2 =
 			testLocations[EIsSatelliteVisibleLocation.AUSTRALIA].position;
 
-		expect(isOnSameHemisphere(location1, location2)).toBe(false);
+		expect(
+			isOnSameHemisphere({
+				devicePosition: location1,
+				satellitePosition: location2,
+			}),
+		).toBe(false);
 	});
+});
+
+describe("Testing getVisibilityScore()", () => {
+	test("Device Position Missing", () => {
+		const location = getRandomPosition();
+		expect(
+			geoCalculator.getVisibilityScore({ satellitePosition: location }),
+		).toBe(0);
+	});
+
+	test("Satellite Position Missing", () => {
+		const location = getRandomPosition();
+		expect(
+			geoCalculator.getVisibilityScore({ devicePosition: location }),
+		).toBe(0);
+	});
+
+	// test("Same Location", () => {
+	// 	const location = testLocations[EIsSatelliteVisibleLocation.JLM];
+	// 	expect(
+	// 		geoCalculator.getVisibilityScore({
+	// 			devicePosition: location.position,
+	// 			satellitePosition: location.position,
+	// 		}),
+	// 	).toBe(1);
+	// });
 });

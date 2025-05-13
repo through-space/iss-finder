@@ -1,5 +1,10 @@
-import { IGeoPosition } from "@common-types/positionTypes";
-import { EGeoCalculatorErrorType } from "./geoCalculatorInterfaces";
+import {
+	EGeoCalculatorErrorType,
+	EScoreCalculationStrategy,
+	IGetVisibilityScoreProps,
+	TGetFinalScoreFn,
+	TRequiredVisibilityConditionFn,
+} from "./geoCalculatorInterfaces";
 
 export const getErrorMessage = (errorType: EGeoCalculatorErrorType) => {
 	return (
@@ -8,27 +13,76 @@ export const getErrorMessage = (errorType: EGeoCalculatorErrorType) => {
 	);
 };
 
-export const isOnSameHemisphere = (
-	position1: IGeoPosition,
-	position2: IGeoPosition,
-): boolean => {
-	if (!position1 || !position2) {
+export const getAverageWeightScore: TGetFinalScoreFn = ({
+	scoreComponents,
+	devicePosition,
+	satellitePosition,
+}) => {
+	const totalWeight = scoreComponents.reduce(
+		(sum, scoreComponent) => sum + scoreComponent.weight,
+		0,
+	);
+
+	return scoreComponents.reduce((finalScore, scoreComponent) => {
+		const score = scoreComponent.getScore({
+			devicePosition,
+			satellitePosition,
+		});
+		const averageWeight = scoreComponent.weight / totalWeight;
+
+		return finalScore + score * averageWeight;
+	}, 0);
+};
+
+export const calculationStrategiesMap: Record<
+	EScoreCalculationStrategy,
+	TGetFinalScoreFn
+> = {
+	[EScoreCalculationStrategy.WEIGHTED_AVERAGE]: getAverageWeightScore,
+};
+
+export const isOnSameHemisphere: TRequiredVisibilityConditionFn = ({
+	devicePosition,
+	satellitePosition,
+}) => {
+	if (!devicePosition || !satellitePosition) {
 		throw new Error(
 			geoCalculatorErrorMessages[EGeoCalculatorErrorType.GENERAL],
 		);
 	}
 
 	return (
-		Math.abs(position1.latitude - position2.latitude) < 90 &&
-		Math.abs(position1.longitude - position2.longitude) < 90
+		Math.abs(devicePosition.latitude - satellitePosition.latitude) < 90 &&
+		Math.abs(devicePosition.longitude - satellitePosition.longitude) < 90
 	);
 };
 
-export const isSatelliteVisible = (
-	devicePosition: IGeoPosition,
-	satellitePosition: IGeoPosition,
-): boolean => {
-	return false;
+export const getVisibilityScore = ({
+	devicePosition,
+	satellitePosition,
+	requiredConditions,
+	scoreComponents,
+	calculationStrategy,
+}: IGetVisibilityScoreProps): number => {
+	if (!devicePosition || !satellitePosition) {
+		return 0;
+	}
+
+	const meetsRequiredConditions = requiredConditions.every((conditionFn) =>
+		conditionFn({ devicePosition, satellitePosition }),
+	);
+
+	if (!meetsRequiredConditions) {
+		return 0;
+	}
+
+	const getFinalScore = calculationStrategiesMap[calculationStrategy];
+
+	return getFinalScore({
+		devicePosition,
+		scoreComponents,
+		satellitePosition,
+	});
 };
 
 export const geoCalculatorErrorMessages: Record<

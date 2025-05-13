@@ -1,4 +1,4 @@
-import { IISSVisibleLocation } from "./isSatelliteVisibleTestsInterfaces";
+import { IISSVisibleLocation } from "./getVisibilityScoreTestInterfaces";
 
 // export const isVisibleTestCases: IISVisibleTestCase[] = [
 // 	{
