@@ -76,6 +76,10 @@ export const getVisibilityScore = ({
 		return 0;
 	}
 
+	if (!scoreComponents || scoreComponents.length === 0) {
+		return 1;
+	}
+
 	const getFinalScore = calculationStrategiesMap[calculationStrategy];
 
 	return getFinalScore({

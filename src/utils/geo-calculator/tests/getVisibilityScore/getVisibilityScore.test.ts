@@ -192,4 +192,27 @@ describe("Testing getVisibilityScore()", () => {
 			}),
 		).toBe(0);
 	});
+
+	test("No Score Components", () => {
+		const location = getRandomPosition();
+		expect(
+			geoCalculator.getVisibilityScore({
+				devicePosition: location,
+				satellitePosition: location,
+				requiredConditions: [isOnSameHemisphere],
+			}),
+		).toBe(1);
+	});
+
+	test("Empty Score Components", () => {
+		const location = getRandomPosition();
+		expect(
+			geoCalculator.getVisibilityScore({
+				devicePosition: location,
+				satellitePosition: location,
+				requiredConditions: [isOnSameHemisphere],
+				scoreComponents: [],
+			}),
+		).toBe(1);
+	});
 });

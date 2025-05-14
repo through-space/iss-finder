@@ -3,6 +3,7 @@ import { FeaturesListLayout } from "@ui-components/layouts/FeaturesListLayout/Fe
 import { IssTrackerProvider } from "../../providers/IssTrackerProvider";
 import { DeviceTrackerProvider } from "../../providers/DeviceTrackerProvider";
 import { WorldMap } from "@features/WorldMap/WorldMap";
+import { Visibility } from "@features/Visibility/Visibility";
 
 export const HomePage: FC = () => {
 	return (
@@ -10,6 +11,7 @@ export const HomePage: FC = () => {
 			<h1> 🛰️ ISS Finder 🛰️</h1>
 			<IssTrackerProvider>
 				<DeviceTrackerProvider>
+					<Visibility />
 					<WorldMap />
 				</DeviceTrackerProvider>
 			</IssTrackerProvider>
