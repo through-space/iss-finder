@@ -1,4 +1,4 @@
-import { IGeoPosition } from "../../../types/positionTypes";
+import { IGeoPosition } from "@common-types/positionTypes";
 import { ReactNode } from "react";
 
 export interface IMapProps {

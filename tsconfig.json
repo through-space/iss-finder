@@ -12,6 +12,9 @@
       "@services/*": [
         "src/services/*"
       ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
       "@hooks/*": [
         "src/hooks/*"
       ],
@@ -23,6 +26,9 @@
       ],
       "@stores/*": [
         "src/stores/*"
+      ],
+      "@features/*": [
+        "src/features/*"
       ]
     },
     "jsx": "react-jsx",

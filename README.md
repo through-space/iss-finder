@@ -3,7 +3,10 @@
 ## Description 
 
 ISS Finder is a minimalistic React App that helps you to locate the International Space Station.
-Just a fun project to help me find ISS (or maybe other satellites) and practice Zustand.
+> My daughter asked me whether a blinking star she sees, is ISS. We have an app at home!  
+> Just a perfect chance to try out new libraries, improve coding skills and a bunch of simple math gym problems.
+
+
 
 ## Features
  - Shows ISS on a map
@@ -22,3 +25,8 @@ npm install
 ```bash
 npm run dev
 ````
+
+### ToDo:
+- [ ] Visibility
+- [ ] Design
+
