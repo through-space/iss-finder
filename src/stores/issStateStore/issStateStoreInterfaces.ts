@@ -7,6 +7,16 @@ export interface IPositionsLogItem {
 
 export interface IssState {
 	currentPosition?: IGeoPosition;
-	positionsLog: IPositionsLogItem[];
+}
+
+export interface IIssCurrentPositionSlice {
+	currentPosition?: IGeoPosition;
 	updateCurrentPosition: (position: IGeoPosition) => void;
 }
+
+export interface IIssPositionsLogSlice {
+	positionsLog: IPositionsLogItem[];
+	updatePositionsLog: (newPosition: IGeoPosition) => void;
+}
+
+// TODO: Do slice really prevent loading Log each time?
