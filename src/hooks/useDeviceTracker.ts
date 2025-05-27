@@ -2,9 +2,8 @@ import { IGeoPosition } from "@common-types/positionTypes";
 import { useEffect, useRef } from "react";
 import { deviceLocationService } from "@services/device-location/deviceLocation";
 import { useDeviceStateStore } from "@stores/deviceStateStore/deviceStateStore";
-//TODO: change it
 //TODO: update only angles
-const UPDATE_DEVICE_POSITION_INTERVAL = 5 * 1000;
+const UPDATE_DEVICE_POSITION_INTERVAL = 5 * 60 * 1000;
 
 export const useDeviceTracker = () => {
 	const intervalRef = useRef<NodeJS.Timeout>(null);
