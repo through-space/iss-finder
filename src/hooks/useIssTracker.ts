@@ -3,7 +3,7 @@ import { useIssStateStore } from "@stores/issStateStore/issStateStore";
 import { ISSLocationAPI } from "@services/iss-location/issLocation";
 import { IGeoPosition } from "@common-types/positionTypes";
 //TODO: change it
-const UPDATE_ISS_POSITION_INTERVAL = 5 * 1000;
+const UPDATE_ISS_POSITION_INTERVAL = 60 * 1000;
 
 export const useIssTracker = () => {
 	const intervalRef = useRef<NodeJS.Timeout>(null);

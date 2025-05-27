@@ -6,11 +6,25 @@ import {
 	TRequiredVisibilityConditionFn,
 } from "./geoCalculatorInterfaces";
 
+const DEFAULT_SATELLITE_ALTITUDE = 408 * 1000;
+const EARTH_RADIUS = 6378 * 1000;
+
 export const getErrorMessage = (errorType: EGeoCalculatorErrorType) => {
 	return (
 		geoCalculatorErrorMessages[errorType] ??
 		geoCalculatorErrorMessages[EGeoCalculatorErrorType.GENERAL]
 	);
+};
+
+const getDegreesFromRadians = (radians: number) => {
+	return ((180 / Math.PI) * radians) % 360;
+};
+
+const getAngleDifference = (a: number, b: number): number => {
+	let diff = a - b;
+	if (diff > 180) diff -= 360;
+	if (diff < -180) diff += 360;
+	return Math.abs(diff);
 };
 
 export const getAverageWeightScore: TGetFinalScoreFn = ({
@@ -54,6 +68,41 @@ export const isOnSameHemisphere: TRequiredVisibilityConditionFn = ({
 	return (
 		Math.abs(devicePosition.latitude - satellitePosition.latitude) < 90 &&
 		Math.abs(devicePosition.longitude - satellitePosition.longitude) < 90
+	);
+};
+
+export const isSatelliteAbove: TRequiredVisibilityConditionFn = ({
+	devicePosition,
+	satellitePosition,
+}) => {
+	const satelliteAltitude = satellitePosition.altitude
+		? satellitePosition.altitude * 1000
+		: DEFAULT_SATELLITE_ALTITUDE;
+
+	// ToDo: Currently device altitude = 0
+	const maxAngleDifferenceRad = Math.acos(
+		EARTH_RADIUS / (EARTH_RADIUS + satelliteAltitude),
+	);
+
+	const maxAngleDifferenceDeg = getDegreesFromRadians(maxAngleDifferenceRad);
+
+	const latAngleDifference = getAngleDifference(
+		devicePosition.latitude,
+		satellitePosition.latitude,
+	);
+	const lonAngleDifference = getAngleDifference(
+		devicePosition.longitude,
+		satellitePosition.longitude,
+	);
+
+	console.table({
+		latAngleDifference,
+		lonAngleDifference,
+	});
+
+	return (
+		latAngleDifference < maxAngleDifferenceDeg &&
+		lonAngleDifference < maxAngleDifferenceDeg
 	);
 };
 
@@ -105,3 +154,5 @@ export const geoCalculatorErrorMessages: Record<
 	[EGeoCalculatorErrorType.SAME_HEMISPHERE_POSITION_MISSING]:
 		"isSameHemisphere() Position is missing",
 };
+
+export const utils = { getDegreesFromRadians };
