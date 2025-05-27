@@ -7,11 +7,18 @@ import {
 import { EGeoCalculatorErrorType } from "../../geoCalculatorInterfaces";
 import { geoCalculator } from "@utils/geo-calculator/geoCalculator";
 import {
+	degreesFromRadiansTestCases,
 	EIsSatelliteVisibleLocation,
 	testLocations,
 } from "@utils/geo-calculator/tests/getVisibilityScore/getVisibilityScoreTestCases";
-import { isOnSameHemisphere } from "@utils/geo-calculator/geoCalculatorConsts";
+import {
+	isOnSameHemisphere,
+	isSatelliteAbove,
+} from "@utils/geo-calculator/geoCalculatorConsts";
 import { IGeoPosition } from "@common-types/positionTypes";
+import { utils } from "@utils/geo-calculator/geoCalculatorConsts";
+
+const { getDegreesFromRadians } = utils;
 
 describe("Testing GMapsPosition Converter", () => {
 	test("JLM", () => {
@@ -214,5 +221,40 @@ describe("Testing getVisibilityScore()", () => {
 				scoreComponents: [],
 			}),
 		).toBe(1);
+	});
+});
+
+describe("Testing RadiansConversion()", () => {
+	test.each(degreesFromRadiansTestCases)(
+		"$input ---> $expected",
+		({ input, expected }) => {
+			expect(getDegreesFromRadians(input)).toBe(expected);
+		},
+	);
+});
+
+describe("Testing isSatelliteAbove()", () => {
+	test("Same Location", () => {
+		const location = testLocations[EIsSatelliteVisibleLocation.JLM];
+		expect(
+			isSatelliteAbove({
+				devicePosition: location.position,
+				satellitePosition: location.position,
+			}),
+		).toBe(true);
+	});
+
+	test("Opposite Location", () => {
+		const location =
+			testLocations[EIsSatelliteVisibleLocation.JLM].position;
+		const oppositeLocation =
+			testLocations[EIsSatelliteVisibleLocation.AUSTRALIA].position;
+
+		expect(
+			isSatelliteAbove({
+				devicePosition: location,
+				satellitePosition: oppositeLocation,
+			}),
+		).toBe(false);
 	});
 });

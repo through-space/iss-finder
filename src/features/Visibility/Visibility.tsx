@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { daytimeService } from "@services/daytime/daytimeService";
 import { TRequiredVisibilityConditionFn } from "@utils/geo-calculator/geoCalculatorInterfaces";
 import { useIssStateStore } from "@stores/issStateStore/issStateStore";
+import { isSatelliteAbove } from "@utils/geo-calculator/geoCalculatorConsts";
 
 export const Visibility = () => {
 	const [isDaytime, setIsDaytime] = useState<boolean>(false);
@@ -16,7 +17,7 @@ export const Visibility = () => {
 
 	const requiredConditions: TRequiredVisibilityConditionFn[] = [
 		() => !isDaytime,
-		// isOnSameHemisphere,
+		isSatelliteAbove,
 	];
 
 	useEffect(() => {

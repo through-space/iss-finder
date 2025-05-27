@@ -1,22 +1,8 @@
 import { IISSVisibleLocation } from "./getVisibilityScoreTestInterfaces";
 
-// export const isVisibleTestCases: IISVisibleTestCase[] = [
-// 	{
-// 		name: "Same Position JLM",
-// 		input: {
-// 			position1: getGeoPositionFromGMapsFormat(
-// 				"31.778191002386542, 35.23540627536224",
-// 			),
-// 			position2: getGeoPositionFromGMapsFormat(
-// 				"31.778191002386542, 35.23540627536224",
-// 			),
-// 		},
-// 		expected: true,
-// 	},
-// ];
-
 export enum EIsSatelliteVisibleLocation {
 	JLM,
+	DEAD_SEA,
 	PHILIPPINES,
 	NEW_DELHI,
 	AUSTRALIA,
@@ -32,6 +18,13 @@ export const testLocations: Record<
 		position: {
 			latitude: 31.77828679359432,
 			longitude: 35.23533654140276,
+		},
+	},
+	[EIsSatelliteVisibleLocation.DEAD_SEA]: {
+		name: "Dead Sea",
+		position: {
+			latitude: 31.578336618744608,
+			longitude: 35.48677526768387,
 		},
 	},
 	[EIsSatelliteVisibleLocation.PHILIPPINES]: {
@@ -59,3 +52,14 @@ export const testLocations: Record<
 		},
 	},
 };
+
+export const degreesFromRadiansTestCases: {
+	input: number;
+	expected: number;
+}[] = [
+	{ input: 0, expected: 0 },
+	{ input: Math.PI / 2, expected: 90 },
+	{ input: Math.PI, expected: 180 },
+	{ input: 2 * Math.PI, expected: 0 },
+	{ input: 3 * Math.PI, expected: 180 },
+];
