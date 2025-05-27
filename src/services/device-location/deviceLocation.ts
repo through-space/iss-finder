@@ -3,6 +3,7 @@
 //TODO: add onError
 
 import { IGeoPosition } from "../../types/positionTypes";
+import { IDeviceLocationService } from "@services/device-location/deviceLocationInterfaces";
 
 const getPositionFromGeolocationPosition = (
 	geoLocation: GeolocationPosition,
@@ -23,6 +24,6 @@ const getDeviceLocation = (): Promise<IGeoPosition> => {
 	});
 };
 
-export const deviceLocationService = {
+export const deviceLocationService: IDeviceLocationService = {
 	getDeviceLocation,
 };

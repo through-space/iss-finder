@@ -12,9 +12,14 @@ export const useIssTracker = () => {
 		(state) => state.updateCurrentPosition,
 	);
 
+	const updateIssPositionLog = useIssStateStore(
+		(state) => state.updateCurrentPosition,
+	);
+
 	const updateISSLocation = () => {
 		ISSLocationAPI.getISSLocation().then((location: IGeoPosition) => {
 			updateCurrentPosition(location);
+			updateIssPositionLog(location);
 		});
 	};
 
