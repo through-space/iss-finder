@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import tailwindcss from "@tailwindcss/vite";
+import * as fs from "node:fs";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -18,6 +19,17 @@ export default defineConfig({
 			"@stores": path.resolve(__dirname, "./src/stores"),
 			"@features": path.resolve(__dirname, "./src/features"),
 		},
+	},
+	server: {
+		https: {
+			key: fs.readFileSync(
+				path.resolve(__dirname, "certs/iss-finder-key.pem"),
+			),
+			cert: fs.readFileSync(
+				path.resolve(__dirname, "certs/iss-finder.pem"),
+			),
+		},
+		host: true, // needed to access from other devices
 	},
 	plugins: [react({}), tailwindcss()],
 });

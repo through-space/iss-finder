@@ -55,22 +55,6 @@ export const calculationStrategiesMap: Record<
 	[EScoreCalculationStrategy.WEIGHTED_AVERAGE]: getAverageWeightScore,
 };
 
-export const isOnSameHemisphere: TRequiredVisibilityConditionFn = ({
-	devicePosition,
-	satellitePosition,
-}) => {
-	if (!devicePosition || !satellitePosition) {
-		throw new Error(
-			geoCalculatorErrorMessages[EGeoCalculatorErrorType.GENERAL],
-		);
-	}
-
-	return (
-		Math.abs(devicePosition.latitude - satellitePosition.latitude) < 90 &&
-		Math.abs(devicePosition.longitude - satellitePosition.longitude) < 90
-	);
-};
-
 export const isSatelliteAbove: TRequiredVisibilityConditionFn = ({
 	devicePosition,
 	satellitePosition,
