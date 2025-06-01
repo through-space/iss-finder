@@ -19,7 +19,9 @@ export const daytimeServiceErrorMessages: Record<EDaytimeServiceError, string> =
 		[EDaytimeServiceError.FETCH_ERROR]: "Fetch Daytime Error",
 	};
 
-// TODO: add test
+// TODO: Add getDaytimeData() to IIsDaytimeProps if other services can provide data.
+//  OR inject data providers.
+//  OR Put to data providers folder inside
 
 const isValidLocation = (location: IGeoPosition): boolean => {
 	return (
