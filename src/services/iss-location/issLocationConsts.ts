@@ -3,8 +3,8 @@ import { TStopTrackingFunction } from "@services/device-state/deviceStateService
 import { IGeoPosition } from "@common-types/positionTypes";
 
 const ISS_LOCATION_API_URL = "https://api.wheretheiss.at/v1/satellites/25544";
-// const UPDATE_ISS_POSITION_INTERVAL = 5 * 60 * 1000;
-const UPDATE_ISS_POSITION_INTERVAL = 5 * 1000;
+const UPDATE_ISS_POSITION_INTERVAL = 5 * 60 * 1000;
+// const UPDATE_ISS_POSITION_INTERVAL = 5 * 1000;
 
 const getISSLocation = async (): Promise<IGeoPosition> => {
 	return fetch(ISS_LOCATION_API_URL)

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useIssStateStore } from "@stores/issStateStore/issStateStore";
-import { ISSLocationService } from "@services/iss-location/issLocation";
+import { ISSLocationService } from "@services/iss-location/issLocationService";
 
 export const useIssTracker = () => {
 	const storeLocation = useIssStateStore(
