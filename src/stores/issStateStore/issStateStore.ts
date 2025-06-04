@@ -3,7 +3,7 @@ import {
 	IIssPositionsLogSlice,
 } from "./issStateStoreInterfaces";
 import { create } from "zustand/react";
-import { IGeoPosition } from "@common-types/positionTypes";
+import { IGeoPosition } from "../../common-types/positionTypes";
 import { getUpdatedPositionsLog } from "./issStateStoreConsts";
 import { StateCreator } from "zustand/index";
 

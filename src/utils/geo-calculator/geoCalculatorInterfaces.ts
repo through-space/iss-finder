@@ -1,4 +1,4 @@
-import { IGeoPosition } from "@common-types/positionTypes";
+import { IGeoPosition } from "../../common-types/positionTypes";
 
 export interface IGeoCalculator {
 	getVisibilityScore: (props: IGetVisibilityScoreProps) => number;

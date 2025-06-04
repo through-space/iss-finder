@@ -1,38 +1,17 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useIssStateStore } from "@stores/issStateStore/issStateStore";
-import { ISSLocationAPI } from "@services/iss-location/issLocation";
-import { IGeoPosition } from "@common-types/positionTypes";
-//TODO: change it
-const UPDATE_ISS_POSITION_INTERVAL = 60 * 1000;
+import { ISSLocationService } from "@services/iss-location/issLocation";
 
 export const useIssTracker = () => {
-	const intervalRef = useRef<NodeJS.Timeout>(null);
-
-	const updateCurrentPosition = useIssStateStore(
+	const storeLocation = useIssStateStore(
 		(state) => state.updateCurrentPosition,
 	);
-
-	const updateIssPositionLog = useIssStateStore(
-		(state) => state.updateCurrentPosition,
-	);
-
-	const updateISSLocation = () => {
-		ISSLocationAPI.getISSLocation().then((location: IGeoPosition) => {
-			updateCurrentPosition(location);
-			updateIssPositionLog(location);
-		});
-	};
 
 	useEffect(() => {
-		updateISSLocation();
-
-		intervalRef.current = setInterval(() => {
-			updateISSLocation();
-		}, UPDATE_ISS_POSITION_INTERVAL);
-
+		const stopLocationTracking =
+			ISSLocationService.startLocationTracking(storeLocation);
 		return () => {
-			clearInterval(intervalRef.current);
-			intervalRef.current = null;
+			stopLocationTracking();
 		};
-	}, [updateCurrentPosition]);
+	}, [storeLocation]);
 };

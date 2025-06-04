@@ -22,7 +22,7 @@
         "src/config/*"
       ],
       "@common-types/*": [
-        "src/types/*"
+        "src/common-types/*"
       ],
       "@stores/*": [
         "src/stores/*"

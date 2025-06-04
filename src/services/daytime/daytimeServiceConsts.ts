@@ -4,7 +4,7 @@ import {
 	IDaytimeServiceResponse,
 	IIsDaytimeProps,
 } from "@services/daytime/daytimeServiceInterfaces";
-import { IGeoPosition } from "@common-types/positionTypes";
+import { IGeoPosition } from "../../common-types/positionTypes";
 import { getTimeStampFromAPIDate } from "@services/daytime/helpers";
 import { isDaytimeCalcStrategies } from "@services/daytime/calculationStrategies";
 

@@ -1,19 +1,8 @@
-//TODO: add types
+//TODO: add common-types
 
-import { ISS_LOCATION_API_URL } from "./issLocationConsts";
-import { IISSLocationAPI } from "./issLocationInterfaces";
-import { IGeoPosition } from "../../types/positionTypes";
+import { startLocationTracking } from "./issLocationConsts";
+import { IISSLocationService } from "./issLocationInterfaces";
 
-const getISSLocation = async (): Promise<IGeoPosition> => {
-	return fetch(ISS_LOCATION_API_URL)
-		.then((res) => {
-			return res.json();
-		})
-		.catch((err) => {
-			throw err;
-		});
-};
-
-export const ISSLocationAPI: IISSLocationAPI = {
-	getISSLocation,
+export const ISSLocationService: IISSLocationService = {
+	startLocationTracking,
 };

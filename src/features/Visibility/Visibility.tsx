@@ -7,6 +7,7 @@ import { useIssStateStore } from "@stores/issStateStore/issStateStore";
 import { isSatelliteAbove } from "@utils/geo-calculator/geoCalculatorConsts";
 
 export const Visibility = () => {
+	console.log("rendering Visibility component");
 	const [isDaytime, setIsDaytime] = useState<boolean>(false);
 
 	const satellitePosition = useIssStateStore(

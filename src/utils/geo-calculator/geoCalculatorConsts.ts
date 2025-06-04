@@ -79,11 +79,6 @@ export const isSatelliteAbove: TRequiredVisibilityConditionFn = ({
 		satellitePosition.longitude,
 	);
 
-	console.table({
-		latAngleDifference,
-		lonAngleDifference,
-	});
-
 	return (
 		latAngleDifference < maxAngleDifferenceDeg &&
 		lonAngleDifference < maxAngleDifferenceDeg

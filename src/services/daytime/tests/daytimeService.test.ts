@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from "vitest";
 import { daytimeServiceErrorMessages } from "@services/daytime/daytimeServiceConsts";
 import { EDaytimeServiceError } from "@services/daytime/daytimeServiceInterfaces";
-import { IGeoPosition } from "@common-types/positionTypes";
+import { IGeoPosition } from "../../../common-types/positionTypes";
 import {
 	EMockLocation,
 	testLocations,

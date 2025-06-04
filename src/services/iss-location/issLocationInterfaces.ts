@@ -1,4 +1,4 @@
-import { IGeoPosition } from "../../types/positionTypes";
+import { IGeoPosition } from "../../common-types/positionTypes";
 
 export interface IISSLocationResponse {
 	altitude: number;
@@ -7,6 +7,10 @@ export interface IISSLocationResponse {
 	timestamp: number;
 }
 
-export interface IISSLocationAPI {
-	getISSLocation: () => Promise<IGeoPosition>;
+export type TStopTrackingFunction = () => void;
+
+export interface IISSLocationService {
+	startLocationTracking: (
+		onUpdate: (position: IGeoPosition) => void,
+	) => TStopTrackingFunction;
 }

@@ -1,4 +1,4 @@
-import { IGeoPosition } from "@common-types/positionTypes";
+import { IGeoPosition } from "../../../common-types/positionTypes";
 import { IMapProps } from "./MapInterfaces";
 
 const DEFAULT_MAP_CENTER: IGeoPosition = {

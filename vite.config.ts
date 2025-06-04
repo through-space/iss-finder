@@ -15,7 +15,7 @@ export default defineConfig({
 			"@config": path.resolve(__dirname, "./src/config"),
 			"@services": path.resolve(__dirname, "./src/services"),
 			"@utils": path.resolve(__dirname, "./src/utils"),
-			"@common-types": path.resolve(__dirname, "./src/types"),
+			"@common-types": path.resolve(__dirname, "./src/common-types"),
 			"@stores": path.resolve(__dirname, "./src/stores"),
 			"@features": path.resolve(__dirname, "./src/features"),
 		},

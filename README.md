@@ -27,7 +27,7 @@ npm install
 npm run dev
 ````
 
-For Mobile Development certificates are needed:
+Create Certificates For Mobile Development certificates:
 ```shell
 mkdir certs
 cd certs
