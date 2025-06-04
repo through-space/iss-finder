@@ -1,23 +1,18 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { FeaturesListLayout } from "@ui-components/layouts/FeaturesListLayout/FeaturesListLayout";
 import { WorldMap } from "@features/WorldMap/WorldMap";
 import { Visibility } from "@features/Visibility/Visibility";
-import { useDeviceOrientation } from "@hooks/useDeviceOrientation";
 import { useDeviceLocation } from "@hooks/useDeviceLocation";
 import { useIssTracker } from "@hooks/useIssTracker";
 import { useDeviceStateStore } from "@stores/deviceStateStore/deviceStateStore";
+import { useDeviceOrientation } from "@hooks/useDeviceOrientation";
 
 export const HomePage: FC = () => {
-	// useDeviceOrientation();
+	useDeviceOrientation();
 	useDeviceLocation();
 	useIssTracker();
 
-	const [event, setEvent] = useState<DeviceOrientationEvent>();
-
-	const geolocationPositionFull = useDeviceStateStore(
-		(state) => state.geolocationPositionFull,
-	);
-
+	const deviceOrientation = useDeviceStateStore((state) => state.orientation);
 	// console.log(geolocationPositionFull.coords);
 	// const heading = geolocationPositionFull.coords;
 	// useEffect(() => {
@@ -30,6 +25,7 @@ export const HomePage: FC = () => {
 	// 	setEvent(e);
 	// };
 	// }, []);
+	console.log(deviceOrientation);
 
 	console.log("rendering homepage");
 
@@ -37,9 +33,9 @@ export const HomePage: FC = () => {
 		<FeaturesListLayout>
 			<h1> 🛰️ ISS Finder 🛰️</h1>
 			<ul>
-				<li>alpha: {Math.round(event?.alpha)}</li>
-				<li>beta: {Math.round(event?.beta)}</li>
-				<li>gamma: {Math.round(event?.gamma)}</li>
+				<li>alpha: {Math.round(deviceOrientation?.alpha)}</li>
+				<li>beta: {Math.round(deviceOrientation?.beta)}</li>
+				<li>gamma: {Math.round(deviceOrientation?.gamma)}</li>
 			</ul>
 			{/*<IssTrackerProvider>*/}
 			{/*	<DeviceOrientationProvider>*/}

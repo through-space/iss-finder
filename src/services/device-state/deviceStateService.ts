@@ -11,6 +11,4 @@ import {
 export const deviceStateService: IDeviceStateService = {
 	startLocationTracking,
 	startOrientationTracking,
-	// getLocation,
-	// getOrientation,
 };

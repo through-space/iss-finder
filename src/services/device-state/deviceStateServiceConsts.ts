@@ -1,26 +1,15 @@
-import { IGeoPosition } from "../../common-types/positionTypes";
 import {
 	IDeviceOrientation,
+	IDeviceOrientationEventiOS,
 	TStopTrackingFunction,
 } from "@services/device-state/deviceStateServiceInterfaces";
+import { IGeoPosition } from "@common-types/positionTypes";
 
 const UPDATE_DEVICE_POSITION_INTERVAL = 30 * 1000;
 
-const getPositionFromGeolocationPosition = (
-	geoLocation: GeolocationPosition,
-): IGeoPosition => {
-	return {
-		latitude: geoLocation.coords.latitude,
-		longitude: geoLocation.coords.longitude,
-		altitude: geoLocation.coords.altitude,
-	};
-};
-
 const getIsIOS = (): boolean => {
-	return !(
-		navigator.userAgent.match(/(iPod|iPhone|iPad)/) &&
-		navigator.userAgent.match(/AppleWebKit/)
-	);
+	return !!(DeviceOrientationEvent as unknown as IDeviceOrientationEventiOS)
+		.requestPermission;
 };
 
 export const getLocation = (): Promise<IGeoPosition> => {
@@ -32,33 +21,25 @@ export const getLocation = (): Promise<IGeoPosition> => {
 	});
 };
 
-export const getOrientation = (): Promise<IDeviceOrientation> => {
-	// return new Promise((resolve) => {
-	// 	const mediaDevices = navigator.mediaDevices
-	// 		.enumerateDevices()
-	// 		.then((devices) => {
-	// 			console.log(devices);
-	// 		});
-	// });
-	// window.addEventListener("deviceorientation", (e) => {};
-};
-
 export const startLocationTracking = (
 	onUpdate: (location: IGeoPosition) => void,
 ): TStopTrackingFunction => {
+	const throwError = (error: Error) => {
+		console.error(error.message);
+		throw error;
+	};
+
 	const updateLocation = () =>
 		getLocation()
 			.then((location) => {
 				onUpdate(location);
 			})
-			.catch((err) => {
-				throw err;
-			});
+			.catch(throwError);
 
-	updateLocation();
+	updateLocation().catch(throwError);
 
 	const intervalId = setInterval(
-		updateLocation,
+		() => updateLocation().catch(throwError),
 		UPDATE_DEVICE_POSITION_INTERVAL,
 	);
 
@@ -70,13 +51,34 @@ export const startLocationTracking = (
 export const startOrientationTracking = (
 	onUpdate: (orientation: IDeviceOrientation) => void,
 ): TStopTrackingFunction => {
-	const intervalId = setInterval(() => {
-		getOrientation().then((orientation) => {
-			onUpdate(orientation);
-		});
-	}, UPDATE_DEVICE_POSITION_INTERVAL);
+	if (getIsIOS()) {
+		(DeviceOrientationEvent as unknown as IDeviceOrientationEventiOS)
+			.requestPermission()
+			.then((response) => {
+				if (response === "granted") {
+					window.addEventListener(
+						"deviceorientation",
+						onUpdate,
+						true,
+					);
+				} else {
+					alert("has to be allowed!");
+				}
+			})
+			.catch(() => alert("not supported"));
+	} else {
+		window.addEventListener(
+			"deviceorientationabsolute",
+			(e) => {
+				console.log(e);
+				onUpdate(e);
+			},
+			true,
+		);
+	}
 
 	return () => {
-		clearInterval(intervalId);
+		window.removeEventListener("deviceorientation", onUpdate, true);
+		window.removeEventListener("deviceorientationabsolute", onUpdate, true);
 	};
 };

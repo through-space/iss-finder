@@ -6,6 +6,10 @@ export interface IDeviceOrientation {
 	gamma: number;
 }
 
+export interface IDeviceOrientationEventiOS extends DeviceOrientationEvent {
+	requestPermission?: () => Promise<"granted" | "denied">;
+}
+
 export type TStopTrackingFunction = () => void;
 
 export interface IDeviceStateService {
