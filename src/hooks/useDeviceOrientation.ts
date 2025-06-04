@@ -11,7 +11,6 @@ export const useDeviceOrientation = () => {
 		const stopOrientationTracking =
 			deviceStateService.startOrientationTracking(storeOrientation);
 		return () => {
-			console.log("returning from useEffect in useDeviceOrientation");
 			stopOrientationTracking();
 		};
 	}, [storeOrientation]);
