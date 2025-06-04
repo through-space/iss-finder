@@ -23,5 +23,5 @@ export const isDaytimeCalcStrategies: Record<
 > = {
 	[EIsDaytimeCalculationStrategy.BY_TOTAL_DARKNESS]:
 		getIsDaytimeByTotalDarkness,
-	[EIsDaytimeCalculationStrategy.BY_FIRST_LIGHT]: (props) => false,
+	[EIsDaytimeCalculationStrategy.BY_FIRST_LIGHT]: () => false,
 };

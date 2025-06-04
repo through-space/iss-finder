@@ -25,18 +25,12 @@ describe("Testing Opposite Timezone Offset", () => {
 
 describe("Testing getTimeStampFromAPIDate()", async () => {
 	const getTimeStampFromAPIDate = utils.getTimeStampFromAPIDate;
-	test.each(apiDateConversionTestCases)(
-		"$name",
-		({ name, input, expected }) => {
-			expect(
-				getTimeStampFromAPIDate(
-					input.date,
-					input.utc_offset,
-					input.time,
-				),
-			).toBe(expected);
-		},
-	);
+
+	test.each(apiDateConversionTestCases)("$name", ({ input, expected }) => {
+		expect(
+			getTimeStampFromAPIDate(input.date, input.utc_offset, input.time),
+		).toBe(expected);
+	});
 });
 
 describe("Testing is getIsDaytimeByTotalDarkness()", () => {

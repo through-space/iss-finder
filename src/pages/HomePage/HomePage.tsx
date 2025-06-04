@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { FeaturesListLayout } from "@ui-components/layouts/FeaturesListLayout/FeaturesListLayout";
 import { WorldMap } from "@features/WorldMap/WorldMap";
 import { Visibility } from "@features/Visibility/Visibility";
@@ -13,20 +13,6 @@ export const HomePage: FC = () => {
 	useIssTracker();
 
 	const deviceOrientation = useDeviceStateStore((state) => state.orientation);
-	// console.log(geolocationPositionFull.coords);
-	// const heading = geolocationPositionFull.coords;
-	// useEffect(() => {
-	// 	window.addEventListener("deviceorientation", (e) => {
-	// window.addEventListener("deviceorientationabsolute", (e) => {
-	// console.log(e);
-	// setEvent(e);
-	// });
-	// ondeviceorientationabsolute = (e) => {
-	// 	setEvent(e);
-	// };
-	// }, []);
-	console.log(deviceOrientation);
-
 	console.log("rendering homepage");
 
 	return (
@@ -37,14 +23,8 @@ export const HomePage: FC = () => {
 				<li>beta: {Math.round(deviceOrientation?.beta)}</li>
 				<li>gamma: {Math.round(deviceOrientation?.gamma)}</li>
 			</ul>
-			{/*<IssTrackerProvider>*/}
-			{/*	<DeviceOrientationProvider>*/}
-			{/*		<DeviceTrackerProvider>*/}
 			<Visibility />
 			<WorldMap />
-			{/*		</DeviceTrackerProvider>*/}
-			{/*	</DeviceOrientationProvider>*/}
-			{/*</IssTrackerProvider>*/}
 		</FeaturesListLayout>
 	);
 };
