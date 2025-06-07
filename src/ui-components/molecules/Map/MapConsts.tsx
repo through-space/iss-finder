@@ -1,5 +1,5 @@
-import { IGeoPosition } from "../../../common-types/positionTypes";
 import { IMapProps } from "./MapInterfaces";
+import { IGeoPosition } from "@common-types/positionTypes";
 
 const DEFAULT_MAP_CENTER: IGeoPosition = {
 	latitude: 51.505,

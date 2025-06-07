@@ -20,7 +20,13 @@ export const FeaturesListWrapper: FC<{ children?: ReactNode }> = ({
 	children,
 }) => {
 	return (
-		<div className={clsx("w-3/4", "flex flex-col gap-10 h-full")}>
+		<div
+			className={clsx(
+				"w-3/4",
+				"flex flex-col gap-10 h-full",
+				"overflow-hidden",
+			)}
+		>
 			{children}
 		</div>
 	);
