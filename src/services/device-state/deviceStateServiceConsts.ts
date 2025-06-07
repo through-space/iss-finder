@@ -68,11 +68,11 @@ export const startOrientationTracking = (
 			.catch(() => alert("not supported"));
 	} else {
 		window.addEventListener(
-			"deviceorientationabsolute",
-			(e) => {
-				console.log(e);
-				onUpdate(e);
-			},
+			// TODO: "deviceorientation" vs "deviceorientationabsolute"
+			// "deviceorientationabsolute",
+
+			"deviceorientation",
+			(e) => onUpdate(e),
 			true,
 		);
 	}
