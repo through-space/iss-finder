@@ -5,6 +5,7 @@ import {
 	TGetFinalScoreFn,
 	TRequiredVisibilityConditionFn,
 } from "./geoCalculatorInterfaces";
+import { IGeoPosition, IPositionVector } from "@common-types/positionTypes";
 
 const DEFAULT_SATELLITE_ALTITUDE = 408 * 1000;
 const EARTH_RADIUS = 6378 * 1000;
@@ -16,8 +17,15 @@ export const getErrorMessage = (errorType: EGeoCalculatorErrorType) => {
 	);
 };
 
+// TODO: check negative values
 const getDegreesFromRadians = (radians: number) => {
 	return ((180 / Math.PI) * radians) % 360;
+};
+
+// TODO: check negative values
+const getRadiansFromDegrees = (degrees: number) => {
+	const normalizedDegrees = degrees % 360;
+	return (normalizedDegrees * Math.PI) / 180;
 };
 
 const getAngleDifference = (a: number, b: number): number => {
@@ -134,4 +142,18 @@ export const geoCalculatorErrorMessages: Record<
 		"isSameHemisphere() Position is missing",
 };
 
-export const utils = { getDegreesFromRadians };
+export const getPositionVector = (position: IGeoPosition): IPositionVector => {
+	const latitudeRadians = getRadiansFromDegrees(position.latitude);
+	const longitudeRadians = getRadiansFromDegrees(position.longitude);
+
+	const radius = EARTH_RADIUS + (position.altitude ?? 0);
+	const xyPlaneProjectionLength = Math.cos(latitudeRadians) * radius;
+
+	return {
+		x: Math.sin(longitudeRadians) * xyPlaneProjectionLength,
+		y: Math.cos(longitudeRadians) * xyPlaneProjectionLength,
+		z: Math.sin(latitudeRadians) * radius,
+	};
+};
+
+export const utils = { getDegreesFromRadians, getRadiansFromDegrees };

@@ -3,3 +3,9 @@ export interface IGeoPosition {
 	longitude: number;
 	altitude?: number;
 }
+
+export interface IPositionVector {
+	x: number;
+	y: number;
+	z: number;
+}

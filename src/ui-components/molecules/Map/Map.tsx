@@ -20,6 +20,7 @@ export const Map: FC<IMapProps> = (props) => {
 				center={[0, 0]}
 				zoom={zoom}
 				scrollWheelZoom={false}
+				// style={{ width: "100%" }}
 				className={"grow"}
 			>
 				<TileLayer

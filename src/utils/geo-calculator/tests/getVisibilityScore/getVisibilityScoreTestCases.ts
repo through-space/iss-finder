@@ -54,12 +54,12 @@ export const testLocations: Record<
 };
 
 export const degreesFromRadiansTestCases: {
-	input: number;
-	expected: number;
+	radians: number;
+	degrees: number;
 }[] = [
-	{ input: 0, expected: 0 },
-	{ input: Math.PI / 2, expected: 90 },
-	{ input: Math.PI, expected: 180 },
-	{ input: 2 * Math.PI, expected: 0 },
-	{ input: 3 * Math.PI, expected: 180 },
+	{ radians: 0, degrees: 0 },
+	{ radians: Math.PI / 2, degrees: 90 },
+	{ radians: Math.PI, degrees: 180 },
+	{ radians: 2 * Math.PI, degrees: 0 },
+	{ radians: 3 * Math.PI, degrees: 180 },
 ];

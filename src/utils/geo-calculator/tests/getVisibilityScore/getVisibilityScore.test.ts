@@ -16,7 +16,7 @@ import {
 	utils,
 } from "@utils/geo-calculator/geoCalculatorConsts";
 
-const { getDegreesFromRadians } = utils;
+const { getDegreesFromRadians, getRadiansFromDegrees } = utils;
 
 describe("Testing GMapsPosition Converter", () => {
 	test("JLM", () => {
@@ -143,11 +143,22 @@ describe("Testing getVisibilityScore()", () => {
 	// });
 });
 
-describe("Testing RadiansConversion()", () => {
+describe("Testing RadiansToDegreesConversion()", () => {
 	test.each(degreesFromRadiansTestCases)(
-		"$input ---> $expected",
-		({ input, expected }) => {
-			expect(getDegreesFromRadians(input)).toBe(expected);
+		"$radians ---> $degrees",
+		({ radians, degrees }) => {
+			expect(getDegreesFromRadians(radians)).toBe(degrees);
+		},
+	);
+});
+
+describe("Testing DegreesToRadiansConversion()", () => {
+	test.each(degreesFromRadiansTestCases)(
+		"$degrees ---> $radians",
+		({ degrees, radians }) => {
+			expect(getRadiansFromDegrees(degrees)).toBe(
+				radians - Math.floor(radians / (2 * Math.PI)) * Math.PI * 2,
+			);
 		},
 	);
 });
