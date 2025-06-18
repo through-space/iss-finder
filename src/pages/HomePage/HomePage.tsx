@@ -5,6 +5,7 @@ import { Visibility } from "@features/Visibility/Visibility";
 import { useDeviceLocation } from "@hooks/useDeviceLocation";
 import { useIssTracker } from "@hooks/useIssTracker";
 import { useDeviceOrientation } from "@hooks/useDeviceOrientation";
+import { DirectionGuide } from "@features/DirectionGuide/DirectionGuide";
 
 export const HomePage: FC = () => {
 	useDeviceOrientation();
@@ -16,7 +17,7 @@ export const HomePage: FC = () => {
 	return (
 		<FeaturesListLayout>
 			<h1> 🛰️ ISS Finder 🛰️</h1>
-			{/*<DirectionGuide />*/}
+			<DirectionGuide />
 			<Visibility />
 			<WorldMap />
 		</FeaturesListLayout>

@@ -142,18 +142,32 @@ export const geoCalculatorErrorMessages: Record<
 		"isSameHemisphere() Position is missing",
 };
 
-export const getPositionVector = (position: IGeoPosition): IPositionVector => {
+const getPositionVector = (position: IGeoPosition): IPositionVector => {
 	const latitudeRadians = getRadiansFromDegrees(position.latitude);
 	const longitudeRadians = getRadiansFromDegrees(position.longitude);
 
-	const radius = EARTH_RADIUS + (position.altitude ?? 0);
-	const xyPlaneProjectionLength = Math.cos(latitudeRadians) * radius;
+	// const radius = EARTH_RADIUS + (position.altitude ?? 0);
+
+	// const xyPlaneProjectionLength = Math.cos(latitudeRadians);
 
 	return {
-		x: Math.sin(longitudeRadians) * xyPlaneProjectionLength,
-		y: Math.cos(longitudeRadians) * xyPlaneProjectionLength,
-		z: Math.sin(latitudeRadians) * radius,
+		x: Math.cos(longitudeRadians) * Math.cos(latitudeRadians),
+		y: Math.sin(longitudeRadians) * Math.cos(latitudeRadians),
+		z: Math.sin(latitudeRadians),
 	};
 };
 
-export const utils = { getDegreesFromRadians, getRadiansFromDegrees };
+export const getViewDirectionVector = (
+	point1: IPositionVector,
+	point2: IPositionVector,
+) => {
+	return getVectorsSum(point2, getOppositeVector(point1));
+};
+
+// const
+
+export const utils = {
+	getDegreesFromRadians,
+	getRadiansFromDegrees,
+	getPositionVector,
+};

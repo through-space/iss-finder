@@ -39,7 +39,9 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "src"
+    "/src/vitest.d.ts",
+    "src",
+    "node_modules/vitest/globals.d.ts"
   ]
 }
 
