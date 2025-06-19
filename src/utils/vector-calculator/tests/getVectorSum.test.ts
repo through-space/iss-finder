@@ -5,7 +5,10 @@ import {
 	EVectorCalculatorErrorType,
 	getErrorMessage,
 } from "@utils/vector-calculator/vectorCalculatorErrors";
-import { getRandomNumber } from "@utils/vector-calculator/tests/utils";
+import {
+	getRandomNumber,
+	getRandomNumbers,
+} from "@utils/vector-calculator/tests/utils";
 
 const { getVectorsSum, getOppositeVector } = utils;
 
@@ -32,9 +35,7 @@ describe("Testing getVectorsSum()", () => {
 
 	test("Opposite Vectors", () => {
 		const dimensions = Math.ceil(Math.random() * 100);
-		const randomNumbers = [...Array(dimensions)].map(() =>
-			getRandomNumber(),
-		);
+		const randomNumbers = getRandomNumbers(dimensions);
 		const vector = [...Array(dimensions)].map(
 			(_, index) => randomNumbers[index],
 		);
@@ -45,7 +46,7 @@ describe("Testing getVectorsSum()", () => {
 	});
 
 	test("2D Different Vectors", () => {
-		const randomNumbers = [...Array(4)].map(() => getRandomNumber());
+		const randomNumbers = getRandomNumbers(4);
 
 		const a = [randomNumbers[0], randomNumbers[1]];
 		const b = [randomNumbers[2], randomNumbers[3]];
@@ -57,7 +58,7 @@ describe("Testing getVectorsSum()", () => {
 	});
 
 	test("3D Different Vectors", () => {
-		const randomNumbers = [...Array(5)].map(() => getRandomNumber());
+		const randomNumbers = getRandomNumbers(6);
 
 		const a = [randomNumbers[0], randomNumbers[1], randomNumbers[2]];
 		const b = [randomNumbers[3], randomNumbers[4], randomNumbers[5]];
@@ -65,7 +66,7 @@ describe("Testing getVectorsSum()", () => {
 		expect(getVectorsSum(a, b)).toEqual([
 			randomNumbers[0] + randomNumbers[3],
 			randomNumbers[1] + randomNumbers[4],
-			randomNumbers[2] + randomNumbers[6],
+			randomNumbers[2] + randomNumbers[5],
 		]);
 	});
 });

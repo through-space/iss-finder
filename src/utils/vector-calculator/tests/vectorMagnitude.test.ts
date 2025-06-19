@@ -1,7 +1,10 @@
 import { describe, expect, test } from "vitest";
 import { utils } from "@utils/vector-calculator/vectorCalculatorConsts";
 import { T3DVector } from "@utils/vector-calculator/vectorCalculatorInterfaces";
-import { getRandomNumber } from "@utils/vector-calculator/tests/utils";
+import {
+	getRandomNumber,
+	getRandomNumbers,
+} from "@utils/vector-calculator/tests/utils";
 
 const { getVectorMagnitude } = utils;
 
@@ -18,7 +21,7 @@ describe("Testing Vector Magnitude Calculation", () => {
 	});
 
 	test("2D Vector", () => {
-		const randomNumbers = [...Array(2)].map(() => getRandomNumber());
+		const randomNumbers = getRandomNumbers(2);
 
 		const vector = [randomNumbers[0], randomNumbers[1]];
 
@@ -27,14 +30,13 @@ describe("Testing Vector Magnitude Calculation", () => {
 		);
 	});
 	test("3D Vector", () => {
-		const randomNumbers = [...Array(3)].map(() => getRandomNumber());
+		const randomNumbers = getRandomNumbers(3);
 
 		const vector: T3DVector = [
 			randomNumbers[0],
 			randomNumbers[1],
 			randomNumbers[2],
 		];
-		// const vector: T3DVector = [randomNumbers[0], randomNumbers[1], randomNumbers[2]];
 
 		expect(getVectorMagnitude(vector)).toBe(
 			Math.sqrt(

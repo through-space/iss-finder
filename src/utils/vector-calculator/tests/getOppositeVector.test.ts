@@ -1,5 +1,8 @@
 import { describe, test, expect } from "vitest";
-import { getRandomNumber } from "@utils/vector-calculator/tests/utils";
+import {
+	getRandomNumber,
+	getRandomNumbers,
+} from "@utils/vector-calculator/tests/utils";
 import { T3DVector } from "@utils/vector-calculator/vectorCalculatorInterfaces";
 import { utils } from "@utils/vector-calculator/vectorCalculatorConsts";
 
@@ -17,7 +20,7 @@ describe("Testing getOppositeVector()", () => {
 	});
 
 	test("2D Vector", () => {
-		const randomNumbers = [...Array(2)].map(() => getRandomNumber());
+		const randomNumbers = getRandomNumbers(2);
 
 		const vector = [randomNumbers[0], randomNumbers[1]];
 
@@ -27,7 +30,7 @@ describe("Testing getOppositeVector()", () => {
 		]);
 	});
 	test("3D Vector", () => {
-		const randomNumbers = [...Array(3)].map(() => getRandomNumber());
+		const randomNumbers = getRandomNumbers(3);
 
 		const vector: T3DVector = [
 			randomNumbers[0],

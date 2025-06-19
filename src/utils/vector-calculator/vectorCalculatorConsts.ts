@@ -4,6 +4,13 @@ import {
 	getErrorMessage,
 } from "@utils/vector-calculator/vectorCalculatorErrors";
 
+const isNullVector = (vector: TVector): boolean => {
+	return (
+		vector.length === 0 ||
+		vector.every((component) => component === 0 || component === null)
+	);
+};
+
 const getDotProduct = (a: TVector, b: TVector): number => {
 	if (a.length !== b.length) {
 		throw new Error(
@@ -47,8 +54,15 @@ export const getRadiansBetweenVectors = (a: TVector, b: TVector): number => {
 		);
 	}
 
-	return Math.acos(
-		getDotProduct(a, b) / (getVectorMagnitude(a) * getVectorMagnitude(b)),
+	if (isNullVector(a) || isNullVector(b)) {
+		return 0;
+	}
+
+	return (
+		Math.acos(
+			getDotProduct(a, b) /
+				(getVectorMagnitude(a) * getVectorMagnitude(b)),
+		) % Math.PI
 	);
 };
 
