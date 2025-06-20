@@ -6,6 +6,7 @@ import {
 	TRequiredVisibilityConditionFn,
 } from "./geoCalculatorInterfaces";
 import { IGeoPosition, IPositionVector } from "@common-types/positionTypes";
+import { T3DVector } from "@utils/vector-calculator/vectorCalculatorInterfaces";
 
 const DEFAULT_SATELLITE_ALTITUDE = 408 * 1000;
 const EARTH_RADIUS = 6378 * 1000;
@@ -142,29 +143,18 @@ export const geoCalculatorErrorMessages: Record<
 		"isSameHemisphere() Position is missing",
 };
 
-const getPositionVector = (position: IGeoPosition): IPositionVector => {
+export const getPositionVector = (position: IGeoPosition): T3DVector => {
 	const latitudeRadians = getRadiansFromDegrees(position.latitude);
 	const longitudeRadians = getRadiansFromDegrees(position.longitude);
 
-	// const radius = EARTH_RADIUS + (position.altitude ?? 0);
+	const radius = EARTH_RADIUS + (position.altitude ?? 0);
 
-	// const xyPlaneProjectionLength = Math.cos(latitudeRadians);
-
-	return {
-		x: Math.cos(longitudeRadians) * Math.cos(latitudeRadians),
-		y: Math.sin(longitudeRadians) * Math.cos(latitudeRadians),
-		z: Math.sin(latitudeRadians),
-	};
+	return [
+		radius * Math.cos(longitudeRadians) * Math.cos(latitudeRadians),
+		radius * Math.sin(longitudeRadians) * Math.cos(latitudeRadians),
+		radius * Math.sin(latitudeRadians),
+	];
 };
-
-export const getViewDirectionVector = (
-	point1: IPositionVector,
-	point2: IPositionVector,
-) => {
-	return getVectorsSum(point2, getOppositeVector(point1));
-};
-
-// const
 
 export const utils = {
 	getDegreesFromRadians,

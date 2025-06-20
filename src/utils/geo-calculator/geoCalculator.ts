@@ -1,7 +1,12 @@
 import { IGeoCalculator } from "./geoCalculatorInterfaces";
-import { getErrorMessage, getVisibilityScore } from "./geoCalculatorConsts";
+import {
+	getErrorMessage,
+	getPositionVector,
+	getVisibilityScore,
+} from "./geoCalculatorConsts";
 
 export const geoCalculator: IGeoCalculator = {
+	getPositionVector,
 	getVisibilityScore,
 	getErrorMessage,
 };

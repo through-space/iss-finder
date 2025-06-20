@@ -1,8 +1,10 @@
 import { IGeoPosition } from "@common-types/positionTypes";
+import { T3DVector } from "@utils/vector-calculator/vectorCalculatorInterfaces";
 
 export interface IGeoCalculator {
 	getVisibilityScore: (props: IGetVisibilityScoreProps) => number;
 	getErrorMessage: (errorType: EGeoCalculatorErrorType) => string | null;
+	getPositionVector: (position: IGeoPosition) => T3DVector;
 }
 
 export enum EGeoCalculatorErrorType {

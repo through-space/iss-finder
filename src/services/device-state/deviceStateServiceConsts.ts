@@ -4,8 +4,11 @@ import {
 	TStopTrackingFunction,
 } from "@services/device-state/deviceStateServiceInterfaces";
 import { IGeoPosition } from "@common-types/positionTypes";
+import { T3DVector } from "@utils/vector-calculator/vectorCalculatorInterfaces";
+import { vectorCalculator } from "@utils/vector-calculator/vectorCalculator";
+import { geoCalculator } from "@utils/geo-calculator/geoCalculator";
 
-const UPDATE_DEVICE_POSITION_INTERVAL = 30 * 1000;
+const UPDATE_DEVICE_POSITION_INTERVAL = 10 * 30 * 1000;
 
 const getIsIOS = (): boolean => {
 	return !!(DeviceOrientationEvent as unknown as IDeviceOrientationEventiOS)
@@ -81,4 +84,15 @@ export const startOrientationTracking = (
 		window.removeEventListener("deviceorientation", onUpdate, true);
 		window.removeEventListener("deviceorientationabsolute", onUpdate, true);
 	};
+};
+
+export const getCameraDirection = (
+	orientation: IDeviceOrientation,
+	position: IGeoPosition,
+): T3DVector => {
+	// const positionVector = geoCalculator.getPositionVector(position);
+	// beta: 0 -> camera down
+	// beta: 180 -> camera up
+	// device on table camera down
+	return [null, null, null];
 };

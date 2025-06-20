@@ -22,9 +22,7 @@ const getDotProduct = (a: TVector, b: TVector): number => {
 };
 
 const getVectorMagnitude = (vector: TVector): number => {
-	return Math.sqrt(
-		vector.reduce((sum, component) => sum + component ** 2, 0),
-	);
+	return Math.hypot(...vector);
 };
 
 const getVectorsSum = (a: TVector, b: TVector) => {
