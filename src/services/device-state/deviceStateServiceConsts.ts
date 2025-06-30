@@ -1,12 +1,17 @@
 import {
 	IDeviceOrientation,
 	IDeviceOrientationEventiOS,
+	TDeviceAngle,
 	TStopTrackingFunction,
 } from "@services/device-state/deviceStateServiceInterfaces";
 import { IGeoPosition } from "@common-types/positionTypes";
-import { T3DVector } from "@utils/vector-calculator/vectorCalculatorInterfaces";
+import {
+	EAxis,
+	T3DVector,
+} from "@utils/vector-calculator/vectorCalculatorInterfaces";
 import { vectorCalculator } from "@utils/vector-calculator/vectorCalculator";
 import { geoCalculator } from "@utils/geo-calculator/geoCalculator";
+import { NULL_3D_VECTOR } from "@utils/vector-calculator/vectorCalculatorConsts";
 
 const UPDATE_DEVICE_POSITION_INTERVAL = 10 * 30 * 1000;
 
@@ -28,7 +33,6 @@ export const startLocationTracking = (
 	onUpdate: (location: IGeoPosition) => void,
 ): TStopTrackingFunction => {
 	const throwError = (error: Error) => {
-		console.error(error.message);
 		throw error;
 	};
 
@@ -52,7 +56,7 @@ export const startLocationTracking = (
 };
 
 export const startOrientationTracking = (
-	onUpdate: (orientation: IDeviceOrientation) => void,
+	onUpdate: (orientation: DeviceOrientationEvent) => void,
 ): TStopTrackingFunction => {
 	if (getIsIOS()) {
 		(DeviceOrientationEvent as unknown as IDeviceOrientationEventiOS)
@@ -86,13 +90,53 @@ export const startOrientationTracking = (
 	};
 };
 
-export const getCameraDirection = (
-	orientation: IDeviceOrientation,
-	position: IGeoPosition,
-): T3DVector => {
-	// const positionVector = geoCalculator.getPositionVector(position);
-	// beta: 0 -> camera down
-	// beta: 180 -> camera up
-	// device on table camera down
-	return [null, null, null];
+export const orientationRotationMap: Record<TDeviceAngle, EAxis> = {
+	alpha: EAxis.Y,
+	beta: EAxis.X,
+	gamma: EAxis.Z,
+};
+
+export const getCameraDirection = (props: {
+	position: IGeoPosition;
+	prevOrientation: IDeviceOrientation;
+	newOrientation: IDeviceOrientation;
+}): T3DVector => {
+	const { prevOrientation, newOrientation, position } = props;
+
+	if (!position) {
+		return NULL_3D_VECTOR;
+	}
+
+	let resultDirection = vectorCalculator.vectorToMatrix(
+		geoCalculator.getPositionVector(position),
+	);
+
+	// return [Math.random(), Math.random(), Math.random()];
+	// console.log(resultDirection, "only from position vector");
+
+	Object.keys(orientationRotationMap).map((angleName: TDeviceAngle) => {
+		if (
+			newOrientation &&
+			(!prevOrientation ||
+				prevOrientation[angleName] !== newOrientation[angleName])
+		) {
+			const rotationAxis = orientationRotationMap[angleName];
+			const rotationMatrix = vectorCalculator.getRotationMatrix(
+				rotationAxis,
+				vectorCalculator.getRadiansFromDegrees(
+					newOrientation[angleName],
+				),
+			);
+
+			resultDirection = vectorCalculator.multiplyMatrices(
+				rotationMatrix,
+				resultDirection,
+			);
+		}
+	});
+
+	const finalResultDirection =
+		vectorCalculator.matrixToVector3D(resultDirection);
+	console.log("calculated direction", finalResultDirection);
+	return vectorCalculator.matrixToVector3D(resultDirection);
 };

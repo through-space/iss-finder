@@ -52,14 +52,3 @@ export const testLocations: Record<
 		},
 	},
 };
-
-export const degreesFromRadiansTestCases: {
-	radians: number;
-	degrees: number;
-}[] = [
-	{ radians: 0, degrees: 0 },
-	{ radians: Math.PI / 2, degrees: 90 },
-	{ radians: Math.PI, degrees: 180 },
-	{ radians: 2 * Math.PI, degrees: 0 },
-	{ radians: 3 * Math.PI, degrees: 180 },
-];

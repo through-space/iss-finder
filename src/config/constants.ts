@@ -1,0 +1,1 @@
+export const DEVICE_STORE_UPDATE_DELAY = 10;

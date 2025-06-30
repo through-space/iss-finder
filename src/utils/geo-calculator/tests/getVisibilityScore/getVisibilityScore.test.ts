@@ -7,16 +7,10 @@ import {
 import { EGeoCalculatorErrorType } from "../../geoCalculatorInterfaces";
 import { geoCalculator } from "@utils/geo-calculator/geoCalculator";
 import {
-	degreesFromRadiansTestCases,
 	EIsSatelliteVisibleLocation,
 	testLocations,
 } from "@utils/geo-calculator/tests/getVisibilityScore/getVisibilityScoreTestCases";
-import {
-	isSatelliteAbove,
-	utils,
-} from "@utils/geo-calculator/geoCalculatorConsts";
-
-const { getDegreesFromRadians, getRadiansFromDegrees } = utils;
+import { isSatelliteAbove } from "@utils/geo-calculator/geoCalculatorConsts";
 
 describe("Testing GMapsPosition Converter", () => {
 	test("JLM", () => {
@@ -141,26 +135,6 @@ describe("Testing getVisibilityScore()", () => {
 	// 		}),
 	// 	).toBe(1);
 	// });
-});
-
-describe("Testing RadiansToDegreesConversion()", () => {
-	test.each(degreesFromRadiansTestCases)(
-		"$radians ---> $degrees",
-		({ radians, degrees }) => {
-			expect(getDegreesFromRadians(radians)).toBe(degrees);
-		},
-	);
-});
-
-describe("Testing DegreesToRadiansConversion()", () => {
-	test.each(degreesFromRadiansTestCases)(
-		"$degrees ---> $radians",
-		({ degrees, radians }) => {
-			expect(getRadiansFromDegrees(degrees)).toBe(
-				radians - Math.floor(radians / (2 * Math.PI)) * Math.PI * 2,
-			);
-		},
-	);
 });
 
 describe("Testing isSatelliteAbove()", () => {

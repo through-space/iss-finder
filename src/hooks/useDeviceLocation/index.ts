@@ -3,9 +3,7 @@ import { deviceStateService } from "@services/device-state/deviceStateService";
 import { useDeviceStateStore } from "@stores/deviceStateStore/deviceStateStore";
 
 export const useDeviceLocation = () => {
-	const storeLocation = useDeviceStateStore(
-		(state) => state.updateCurrentPosition,
-	);
+	const storeLocation = useDeviceStateStore((state) => state.updatePosition);
 
 	useEffect(() => {
 		const stopLocationTracking =

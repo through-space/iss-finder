@@ -2,10 +2,10 @@ import { FC } from "react";
 import { FeaturesListLayout } from "@ui-components/layouts/FeaturesListLayout/FeaturesListLayout";
 import { WorldMap } from "@features/WorldMap/WorldMap";
 import { Visibility } from "@features/Visibility/Visibility";
-import { useDeviceLocation } from "@hooks/useDeviceLocation";
-import { useIssTracker } from "@hooks/useIssTracker";
 import { useDeviceOrientation } from "@hooks/useDeviceOrientation";
 import { DirectionGuide } from "@features/DirectionGuide/DirectionGuide";
+import { useDeviceLocation } from "@hooks/useDeviceLocation";
+import { useIssTracker } from "@hooks/useIssTracker";
 
 export const HomePage: FC = () => {
 	useDeviceOrientation();

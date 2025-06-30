@@ -5,8 +5,13 @@ import {
 	TGetFinalScoreFn,
 	TRequiredVisibilityConditionFn,
 } from "./geoCalculatorInterfaces";
-import { IGeoPosition, IPositionVector } from "@common-types/positionTypes";
+import { IGeoPosition } from "@common-types/positionTypes";
 import { T3DVector } from "@utils/vector-calculator/vectorCalculatorInterfaces";
+import { vectorCalculator } from "@utils/vector-calculator/vectorCalculator";
+import {
+	getDegreesFromRadians,
+	getRadiansFromDegrees,
+} from "@utils/vector-calculator/operations/basic";
 
 const DEFAULT_SATELLITE_ALTITUDE = 408 * 1000;
 const EARTH_RADIUS = 6378 * 1000;
@@ -16,17 +21,6 @@ export const getErrorMessage = (errorType: EGeoCalculatorErrorType) => {
 		geoCalculatorErrorMessages[errorType] ??
 		geoCalculatorErrorMessages[EGeoCalculatorErrorType.GENERAL]
 	);
-};
-
-// TODO: check negative values
-const getDegreesFromRadians = (radians: number) => {
-	return ((180 / Math.PI) * radians) % 360;
-};
-
-// TODO: check negative values
-const getRadiansFromDegrees = (degrees: number) => {
-	const normalizedDegrees = degrees % 360;
-	return (normalizedDegrees * Math.PI) / 180;
 };
 
 const getAngleDifference = (a: number, b: number): number => {
@@ -77,7 +71,9 @@ export const isSatelliteAbove: TRequiredVisibilityConditionFn = ({
 		EARTH_RADIUS / (EARTH_RADIUS + satelliteAltitude),
 	);
 
-	const maxAngleDifferenceDeg = getDegreesFromRadians(maxAngleDifferenceRad);
+	const maxAngleDifferenceDeg = vectorCalculator.getDegreesFromRadians(
+		maxAngleDifferenceRad,
+	);
 
 	const latAngleDifference = getAngleDifference(
 		devicePosition.latitude,
@@ -144,20 +140,28 @@ export const geoCalculatorErrorMessages: Record<
 };
 
 export const getPositionVector = (position: IGeoPosition): T3DVector => {
+	if (
+		!position ||
+		position.latitude === null ||
+		position.longitude === null
+	) {
+		return [null, null, null];
+	}
+
 	const latitudeRadians = getRadiansFromDegrees(position.latitude);
 	const longitudeRadians = getRadiansFromDegrees(position.longitude);
 
-	const radius = EARTH_RADIUS + (position.altitude ?? 0);
+	// const radius = EARTH_RADIUS + (position.altitude ?? 0);
 
 	return [
-		radius * Math.cos(longitudeRadians) * Math.cos(latitudeRadians),
-		radius * Math.sin(longitudeRadians) * Math.cos(latitudeRadians),
-		radius * Math.sin(latitudeRadians),
+		Math.cos(longitudeRadians) * Math.cos(latitudeRadians),
+		Math.sin(longitudeRadians) * Math.cos(latitudeRadians),
+		Math.sin(latitudeRadians),
 	];
 };
 
 export const utils = {
-	getDegreesFromRadians,
-	getRadiansFromDegrees,
+	// getDegreesFromRadians,
+	// getRadiansFromDegrees,
 	getPositionVector,
 };

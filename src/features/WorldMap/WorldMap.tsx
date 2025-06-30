@@ -9,9 +9,7 @@ export const WorldMap = () => {
 	const issPosition = useIssStateStore((state) => {
 		return state.currentPosition;
 	});
-	const devicePosition = useDeviceStateStore((state) => {
-		return state.position;
-	});
+	const devicePosition = useDeviceStateStore((state) => state.position);
 
 	const markers = [
 		devicePosition && (

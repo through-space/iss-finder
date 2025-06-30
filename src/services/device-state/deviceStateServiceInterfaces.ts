@@ -14,11 +14,17 @@ export interface IDeviceOrientationEventiOS extends DeviceOrientationEvent {
 export type TStopTrackingFunction = () => void;
 
 export interface IDeviceStateService {
-	getCameraDirection: (orientation: IDeviceOrientation) => T3DVector;
+	getCameraDirection: (props: {
+		position: IGeoPosition;
+		prevOrientation: IDeviceOrientation;
+		newOrientation: IDeviceOrientation;
+	}) => T3DVector;
 	startLocationTracking: (
 		onUpdate: (position: IGeoPosition) => void,
 	) => TStopTrackingFunction;
 	startOrientationTracking: (
-		onUpdate: (position: IDeviceOrientation) => void,
+		onUpdate: (orientationEvent: DeviceOrientationEvent) => void,
 	) => TStopTrackingFunction;
 }
+
+export type TDeviceAngle = "alpha" | "beta" | "gamma";

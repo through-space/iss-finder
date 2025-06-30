@@ -1,20 +1,35 @@
 import { FC } from "react";
 import { useDeviceStateStore } from "@stores/deviceStateStore/deviceStateStore";
-import { useIssStateStore } from "@stores/issStateStore/issStateStore";
-import { geoCalculator } from "@utils/geo-calculator/geoCalculator";
 
 export const DirectionGuide: FC = () => {
 	const deviceOrientation = useDeviceStateStore((state) => state.orientation);
-	const satellitePosition = useIssStateStore(
-		(state) => state.currentPosition,
-	);
+	const deviceDirection = useDeviceStateStore((state) => state.direction);
 
-	// const satellitePositionVector = geoCalculator.
+	const getRoundedDirection = (angle: number) => {
+		const roundFactor = Math.pow(10, 3);
+		return Math.round(angle * roundFactor) / roundFactor;
+	};
+
 	return (
-		<ul>
-			<li>alpha: {Math.round(deviceOrientation?.alpha)}</li>
-			<li>beta: {Math.round(deviceOrientation?.beta)}</li>
-			<li>gamma: {Math.round(deviceOrientation?.gamma)}</li>
-		</ul>
+		<>
+			<>
+				<h5>device orientation</h5>
+				<ul>
+					<li>alpha: {Math.round(deviceOrientation?.alpha)}</li>
+					<li>beta: {Math.round(deviceOrientation?.beta)}</li>
+					<li>gamma: {Math.round(deviceOrientation?.gamma)}</li>
+				</ul>
+			</>
+			<>
+				<h5>direction</h5>
+				{deviceDirection && (
+					<ul>
+						<li>x: {getRoundedDirection(deviceDirection[0])}</li>
+						<li>y: {getRoundedDirection(deviceDirection[1])}</li>
+						<li>z: {getRoundedDirection(deviceDirection[2])}</li>
+					</ul>
+				)}
+			</>
+		</>
 	);
 };
