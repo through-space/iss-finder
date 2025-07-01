@@ -1,6 +1,6 @@
-import { IGeoPosition } from "../../../../common-types/positionTypes";
-import { geoCalculatorErrorMessages } from "../../geoCalculatorConsts";
-import { EGeoCalculatorErrorType } from "../../geoCalculatorInterfaces";
+import { IGeoPosition } from "@common-types/positionTypes";
+import { geoCalculatorErrorMessages } from "../../../geoCalculatorConsts";
+import { EGeoCalculatorErrorType } from "../../../geoCalculatorInterfaces";
 
 export const getGeoPositionFromGMapsFormat = (
 	positionStr: string,

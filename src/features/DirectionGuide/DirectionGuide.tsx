@@ -6,7 +6,7 @@ export const DirectionGuide: FC = () => {
 	const deviceDirection = useDeviceStateStore((state) => state.direction);
 
 	const getRoundedDirection = (angle: number) => {
-		const roundFactor = Math.pow(10, 3);
+		const roundFactor = 1e3;
 		return Math.round(angle * roundFactor) / roundFactor;
 	};
 

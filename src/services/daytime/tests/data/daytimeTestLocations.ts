@@ -1,4 +1,4 @@
-import { IISSVisibleLocation } from "@utils/geo-calculator/tests/getVisibilityScore/getVisibilityScoreTestInterfaces";
+import { IISSVisibleLocation } from "@utils/geo-calculator/tests/main/getVisibilityScore/getVisibilityScoreTestInterfaces";
 
 export enum EMockLocation {
 	JLM,

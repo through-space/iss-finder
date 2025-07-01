@@ -4,12 +4,12 @@ import {
 	getOppositeAngle,
 	getRandomPosition,
 } from "./getVisibilityScoreTestConsts";
-import { EGeoCalculatorErrorType } from "../../geoCalculatorInterfaces";
+import { EGeoCalculatorErrorType } from "../../../geoCalculatorInterfaces";
 import { geoCalculator } from "@utils/geo-calculator/geoCalculator";
 import {
 	EIsSatelliteVisibleLocation,
 	testLocations,
-} from "@utils/geo-calculator/tests/getVisibilityScore/getVisibilityScoreTestCases";
+} from "@utils/geo-calculator/tests/main/getVisibilityScore/getVisibilityScoreTestCases";
 import { isSatelliteAbove } from "@utils/geo-calculator/geoCalculatorConsts";
 
 describe("Testing GMapsPosition Converter", () => {

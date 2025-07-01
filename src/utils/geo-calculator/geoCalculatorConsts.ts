@@ -151,8 +151,6 @@ export const getPositionVector = (position: IGeoPosition): T3DVector => {
 	const latitudeRadians = getRadiansFromDegrees(position.latitude);
 	const longitudeRadians = getRadiansFromDegrees(position.longitude);
 
-	// const radius = EARTH_RADIUS + (position.altitude ?? 0);
-
 	return [
 		Math.cos(longitudeRadians) * Math.cos(latitudeRadians),
 		Math.sin(longitudeRadians) * Math.cos(latitudeRadians),

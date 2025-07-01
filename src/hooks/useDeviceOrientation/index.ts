@@ -12,7 +12,6 @@ export const useDeviceOrientation = () => {
 	);
 	const saveDirection = useDeviceStateStore((state) => state.updateDirection);
 	const orientation = useRef<IDeviceOrientation | null>(null);
-	// const position = useDeviceStateStore((state) => state.position);
 
 	const debouncedSaveOrientation = useDebouncedCallback(
 		(orientation, direction) => {

@@ -39,6 +39,7 @@ export const startLocationTracking = (
 	const updateLocation = () =>
 		getLocation()
 			.then((location) => {
+				console.log(JSON.stringify(location));
 				onUpdate(location);
 			})
 			.catch(throwError);
@@ -91,8 +92,8 @@ export const startOrientationTracking = (
 };
 
 export const orientationRotationMap: Record<TDeviceAngle, EAxis> = {
-	alpha: EAxis.Y,
-	beta: EAxis.X,
+	alpha: EAxis.X,
+	beta: EAxis.Y,
 	gamma: EAxis.Z,
 };
 
@@ -103,7 +104,7 @@ export const getCameraDirection = (props: {
 }): T3DVector => {
 	const { prevOrientation, newOrientation, position } = props;
 
-	if (!position) {
+	if (!position || !newOrientation) {
 		return NULL_3D_VECTOR;
 	}
 
@@ -111,16 +112,13 @@ export const getCameraDirection = (props: {
 		geoCalculator.getPositionVector(position),
 	);
 
-	// return [Math.random(), Math.random(), Math.random()];
-	// console.log(resultDirection, "only from position vector");
-
 	Object.keys(orientationRotationMap).map((angleName: TDeviceAngle) => {
 		if (
-			newOrientation &&
-			(!prevOrientation ||
-				prevOrientation[angleName] !== newOrientation[angleName])
+			!prevOrientation ||
+			prevOrientation[angleName] !== newOrientation[angleName]
 		) {
 			const rotationAxis = orientationRotationMap[angleName];
+			console.log(rotationAxis);
 			const rotationMatrix = vectorCalculator.getRotationMatrix(
 				rotationAxis,
 				vectorCalculator.getRadiansFromDegrees(
@@ -135,8 +133,5 @@ export const getCameraDirection = (props: {
 		}
 	});
 
-	const finalResultDirection =
-		vectorCalculator.matrixToVector3D(resultDirection);
-	console.log("calculated direction", finalResultDirection);
 	return vectorCalculator.matrixToVector3D(resultDirection);
 };

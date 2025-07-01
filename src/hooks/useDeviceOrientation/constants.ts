@@ -1,1 +1,1 @@
-export const ORIENTATION_CHANGE_TOLERANCE = Math.pow(10, -7);
+export const ORIENTATION_CHANGE_TOLERANCE = 1e-7;
