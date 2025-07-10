@@ -27,7 +27,6 @@ export const useDeviceOrientation = () => {
 			const { alpha, beta, gamma } = e;
 			const newOrientation: IDeviceOrientation = { alpha, beta, gamma };
 			const position = useDeviceStateStore.getState().position;
-			//
 
 			if (!newOrientation) {
 				return;
@@ -38,13 +37,13 @@ export const useDeviceOrientation = () => {
 			}
 
 			if (isSameOrientation(orientation.current, newOrientation)) {
+				console.log("same orientation");
 				return;
 			}
 
 			const newDirection = deviceStateService.getCameraDirection({
 				position,
-				prevOrientation: orientation.current,
-				newOrientation: newOrientation,
+				orientation: newOrientation,
 			});
 
 			debouncedSaveOrientation(newOrientation, newDirection);

@@ -19,4 +19,6 @@ export interface IVectorCalculator {
 	multiplyMatrices: (a: TMatrix, b: TMatrix) => TMatrix;
 	vectorToMatrix: (vector: TVector) => TMatrix;
 	matrixToVector3D: (matrix: TMatrix) => T3DVector;
+	getOppositeVector: (vector: TVector) => TVector;
+	normalizeVector: (vector: TVector) => TVector;
 }

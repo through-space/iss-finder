@@ -1,17 +1,18 @@
 import {
 	IDeviceOrientation,
 	IDeviceOrientationEventiOS,
-	TDeviceAngle,
 	TStopTrackingFunction,
 } from "@services/device-state/deviceStateServiceInterfaces";
 import { IGeoPosition } from "@common-types/positionTypes";
 import {
 	EAxis,
 	T3DVector,
+	TMatrix,
 } from "@utils/vector-calculator/vectorCalculatorInterfaces";
 import { vectorCalculator } from "@utils/vector-calculator/vectorCalculator";
-import { geoCalculator } from "@utils/geo-calculator/geoCalculator";
 import { NULL_3D_VECTOR } from "@utils/vector-calculator/vectorCalculatorConsts";
+import { getEnuToEcefRotationMatrix } from "@utils/geo-calculator/geoCalculatorConsts";
+import { multiplyMatrices } from "@utils/vector-calculator/operations/matrix";
 
 const UPDATE_DEVICE_POSITION_INTERVAL = 10 * 30 * 1000;
 
@@ -23,7 +24,6 @@ const getIsIOS = (): boolean => {
 export const getLocation = (): Promise<IGeoPosition> => {
 	return new Promise((resolve, reject) => {
 		navigator.geolocation.getCurrentPosition((position) => {
-			// console.log(position);
 			resolve(position.coords);
 		}, reject);
 	});
@@ -39,7 +39,6 @@ export const startLocationTracking = (
 	const updateLocation = () =>
 		getLocation()
 			.then((location) => {
-				console.log(JSON.stringify(location));
 				onUpdate(location);
 			})
 			.catch(throwError);
@@ -91,47 +90,62 @@ export const startOrientationTracking = (
 	};
 };
 
-export const orientationRotationMap: Record<TDeviceAngle, EAxis> = {
-	alpha: EAxis.X,
-	beta: EAxis.Y,
-	gamma: EAxis.Z,
+/**
+ * By GPT
+ */
+export const orientationRotationMap: Record<string, EAxis> = {
+	alpha: EAxis.Z,
+	beta: EAxis.X,
+	gamma: EAxis.Y,
+};
+
+const rotationAngleOrder = ["alpha", "beta", "gamma"];
+
+const getRotationMatrix = (orientation: IDeviceOrientation): TMatrix => {
+	let rotationMatrix = [
+		[1, 0, 0],
+		[0, 1, 0],
+		[0, 0, 1],
+	];
+
+	rotationAngleOrder.map((angleName) => {
+		rotationMatrix = vectorCalculator.multiplyMatrices(
+			rotationMatrix,
+			vectorCalculator.getRotationMatrix(
+				orientationRotationMap[angleName],
+				vectorCalculator.getRadiansFromDegrees(orientation[angleName]),
+			),
+		);
+	});
+
+	return rotationMatrix;
 };
 
 export const getCameraDirection = (props: {
+	orientation: IDeviceOrientation;
 	position: IGeoPosition;
-	prevOrientation: IDeviceOrientation;
-	newOrientation: IDeviceOrientation;
 }): T3DVector => {
-	const { prevOrientation, newOrientation, position } = props;
+	const { position, orientation } = props;
 
-	if (!position || !newOrientation) {
+	if (!orientation) {
 		return NULL_3D_VECTOR;
 	}
 
-	let resultDirection = vectorCalculator.vectorToMatrix(
-		geoCalculator.getPositionVector(position),
+	const rotationMatrix = getRotationMatrix(orientation);
+
+	const forward = [0, 0, -1];
+
+	const directionMatrix = vectorCalculator.multiplyMatrices(
+		rotationMatrix,
+		vectorCalculator.vectorToMatrix(forward),
 	);
 
-	Object.keys(orientationRotationMap).map((angleName: TDeviceAngle) => {
-		if (
-			!prevOrientation ||
-			prevOrientation[angleName] !== newOrientation[angleName]
-		) {
-			const rotationAxis = orientationRotationMap[angleName];
-			console.log(rotationAxis);
-			const rotationMatrix = vectorCalculator.getRotationMatrix(
-				rotationAxis,
-				vectorCalculator.getRadiansFromDegrees(
-					newOrientation[angleName],
-				),
-			);
+	const positionMatrix = vectorCalculator.multiplyMatrices(
+		getEnuToEcefRotationMatrix(position),
+		directionMatrix,
+	);
 
-			resultDirection = vectorCalculator.multiplyMatrices(
-				rotationMatrix,
-				resultDirection,
-			);
-		}
-	});
-
-	return vectorCalculator.matrixToVector3D(resultDirection);
+	return vectorCalculator.matrixToVector3D(
+		position ? positionMatrix : directionMatrix,
+	);
 };

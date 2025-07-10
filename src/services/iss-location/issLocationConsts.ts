@@ -20,7 +20,6 @@ export const startLocationTracking = (
 	onUpdate: (location: IGeoPosition) => void,
 ): TStopTrackingFunction => {
 	const throwError = (err: Error) => {
-		console.error(err.message);
 		throw err;
 	};
 

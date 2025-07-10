@@ -12,5 +12,12 @@ export const getVectorMagnitude = (vector: TVector): number => {
 };
 
 export const getOppositeVector = (vector: TVector): TVector => {
-	return vector.map((component) => -component);
+	return vector.map((component) => {
+		return -component;
+	});
+};
+
+export const normalizeVector = (vector: TVector): TVector => {
+	const length = Math.hypot(...vector);
+	return vector.map((component) => component / length);
 };

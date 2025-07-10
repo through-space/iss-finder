@@ -6,12 +6,11 @@ import {
 	TRequiredVisibilityConditionFn,
 } from "./geoCalculatorInterfaces";
 import { IGeoPosition } from "@common-types/positionTypes";
-import { T3DVector } from "@utils/vector-calculator/vectorCalculatorInterfaces";
-import { vectorCalculator } from "@utils/vector-calculator/vectorCalculator";
 import {
-	getDegreesFromRadians,
-	getRadiansFromDegrees,
-} from "@utils/vector-calculator/operations/basic";
+	T3DVector,
+	TMatrix,
+} from "@utils/vector-calculator/vectorCalculatorInterfaces";
+import { vectorCalculator } from "@utils/vector-calculator/vectorCalculator";
 
 const DEFAULT_SATELLITE_ALTITUDE = 408 * 1000;
 const EARTH_RADIUS = 6378 * 1000;
@@ -139,27 +138,109 @@ export const geoCalculatorErrorMessages: Record<
 		"isSameHemisphere() Position is missing",
 };
 
-export const getPositionVector = (position: IGeoPosition): T3DVector => {
-	if (
-		!position ||
-		position.latitude === null ||
-		position.longitude === null
-	) {
-		return [null, null, null];
-	}
+export const getEnuRotationMatrix_back = (position: IGeoPosition): TMatrix => {
+	const lat = vectorCalculator.getRadiansFromDegrees(position.latitude);
+	const lon = vectorCalculator.getRadiansFromDegrees(position.longitude);
 
-	const latitudeRadians = getRadiansFromDegrees(position.latitude);
-	const longitudeRadians = getRadiansFromDegrees(position.longitude);
+	const sinLat = Math.sin(lat);
+	const cosLat = Math.cos(lat);
+	const sinLon = Math.sin(lon);
+	const cosLon = Math.cos(lon);
 
+	// Earth rotation matrix from ECEF to ENU
 	return [
-		Math.cos(longitudeRadians) * Math.cos(latitudeRadians),
-		Math.sin(longitudeRadians) * Math.cos(latitudeRadians),
-		Math.sin(latitudeRadians),
+		[-sinLon, cosLon, 0],
+		[-sinLat * cosLon, -sinLat * sinLon, cosLat],
+		[cosLat * cosLon, cosLat * sinLon, sinLat],
 	];
 };
 
+export const getEnuToEcefRotationMatrix = (position: IGeoPosition): TMatrix => {
+	const lat = vectorCalculator.getRadiansFromDegrees(position.latitude);
+	const lon = vectorCalculator.getRadiansFromDegrees(position.longitude);
+
+	const sinLat = Math.sin(lat);
+	const cosLat = Math.cos(lat);
+	const sinLon = Math.sin(lon);
+	const cosLon = Math.cos(lon);
+
+	return [
+		[-sinLon, -sinLat * cosLon, cosLat * cosLon],
+		[cosLon, -sinLat * sinLon, cosLat * sinLon],
+		[0, cosLat, sinLat],
+	];
+};
+
+export const getGeoPositionVector = (position: IGeoPosition): T3DVector => {
+	const a = 6378137.0; // WGS84 equatorial radius
+	const e2 = 6.69437999014e-3; // eccentricity squared
+
+	const lat = vectorCalculator.getRadiansFromDegrees(position.latitude);
+	const lon = vectorCalculator.getRadiansFromDegrees(position.longitude);
+	const alt = position?.altitude ?? 0;
+
+	const sinLat = Math.sin(lat);
+	const cosLat = Math.cos(lat);
+	const sinLon = Math.sin(lon);
+	const cosLon = Math.cos(lon);
+
+	const N = a / Math.sqrt(1 - e2 * sinLat * sinLat);
+
+	const x = (N + alt) * cosLat * cosLon;
+	const y = (N + alt) * cosLat * sinLon;
+	const z = (N * (1 - e2) + alt) * sinLat;
+
+	return [x, y, z];
+};
+
+// export const getGeoPositionVectorGPT = (position: IGeoPosition): T3DVector => {
+// 	const a = 6378137.0; // WGS84 equatorial radius
+// 	const e2 = 6.69437999014e-3; // eccentricity squared
+//
+// 	const lat = vectorCalculator.getRadiansFromDegrees(position.latitude);
+// 	const lon = vectorCalculator.getRadiansFromDegrees(position.longitude);
+// 	const alt = position?.altitude ?? 0;
+//
+// 	const sinLat = Math.sin(lat);
+// 	const cosLat = Math.cos(lat);
+// 	const sinLon = Math.sin(lon);
+// 	const cosLon = Math.cos(lon);
+//
+// 	const N = a / Math.sqrt(1 - e2 * sinLat * sinLat);
+//
+// 	const x = (N + alt) * cosLat * cosLon;
+// 	const y = (N + alt) * cosLat * sinLon;
+// 	const z = (N * (1 - e2) + alt) * sinLat;
+//
+// 	return [x, y, z];
+// };
+
+// export const getGeoPositionVector_old = (position: IGeoPosition): T3DVector => {
+// 	if (
+// 		!position ||
+// 		position.latitude === null ||
+// 		position.longitude === null
+// 	) {
+// 		return [null, null, null];
+// 	}
+//
+// 	return vectorCalculator.matrixToVector3D(
+// 		vectorCalculator.multiplyMatrices(getEnuRotationMatrix(position), [
+// 			Array.from({ length: 3 }, () => 1),
+// 		]),
+// 	);
+// };
+
+const getRandomPosition = (): IGeoPosition => {
+	const randomAngle = () => Math.random() * 360 - 180;
+
+	return {
+		latitude: randomAngle(),
+		longitude: randomAngle(),
+	};
+};
+
 export const utils = {
-	// getDegreesFromRadians,
-	// getRadiansFromDegrees,
-	getPositionVector,
+	getGeoPositionVector,
+	getRandomPosition,
 };

@@ -2,7 +2,6 @@ import { describe, expect, test } from "vitest";
 import {
 	getGeoPositionFromGMapsFormat,
 	getOppositeAngle,
-	getRandomPosition,
 } from "./getVisibilityScoreTestConsts";
 import { EGeoCalculatorErrorType } from "../../../geoCalculatorInterfaces";
 import { geoCalculator } from "@utils/geo-calculator/geoCalculator";
@@ -10,7 +9,12 @@ import {
 	EIsSatelliteVisibleLocation,
 	testLocations,
 } from "@utils/geo-calculator/tests/main/getVisibilityScore/getVisibilityScoreTestCases";
-import { isSatelliteAbove } from "@utils/geo-calculator/geoCalculatorConsts";
+import {
+	isSatelliteAbove,
+	utils,
+} from "@utils/geo-calculator/geoCalculatorConsts";
+
+const getRandomPosition = utils.getRandomPosition;
 
 describe("Testing GMapsPosition Converter", () => {
 	test("JLM", () => {

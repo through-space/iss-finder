@@ -5,10 +5,7 @@ import { IDeviceOrientation } from "@services/device-state/deviceStateServiceInt
 import { T3DVector } from "@utils/vector-calculator/vectorCalculatorInterfaces";
 
 export const useDeviceStateStore = create<IDeviceStateStore>()((set) => {
-	console.log("building this object from scratch each time?");
 	return {
-		// position: null,
-		// orientation: null,
 		updatePosition: (newPosition: IGeoPosition) => {
 			set(() => ({
 				position: newPosition,

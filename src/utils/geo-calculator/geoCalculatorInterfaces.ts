@@ -1,10 +1,16 @@
 import { IGeoPosition } from "@common-types/positionTypes";
-import { T3DVector } from "@utils/vector-calculator/vectorCalculatorInterfaces";
+import {
+	T3DVector,
+	TMatrix,
+} from "@utils/vector-calculator/vectorCalculatorInterfaces";
 
 export interface IGeoCalculator {
 	getVisibilityScore: (props: IGetVisibilityScoreProps) => number;
 	getErrorMessage: (errorType: EGeoCalculatorErrorType) => string | null;
-	getPositionVector: (position: IGeoPosition) => T3DVector;
+	// getEnuRotationMatrix: (position: IGeoPosition) => TMatrix;
+	getEnuToEcefRotationMatrix: (position: IGeoPosition) => TMatrix;
+	getGeoPositionVector: (position: IGeoPosition) => T3DVector;
+	// getGeoPositionVectorGPT: (position: IGeoPosition) => T3DVector;
 }
 
 export enum EGeoCalculatorErrorType {

@@ -15,9 +15,8 @@ export type TStopTrackingFunction = () => void;
 
 export interface IDeviceStateService {
 	getCameraDirection: (props: {
-		position: IGeoPosition;
-		prevOrientation?: IDeviceOrientation;
-		newOrientation: IDeviceOrientation;
+		orientation: IDeviceOrientation;
+		position?: IGeoPosition;
 	}) => T3DVector;
 	startLocationTracking: (
 		onUpdate: (position: IGeoPosition) => void,

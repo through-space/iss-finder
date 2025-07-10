@@ -1,4 +1,7 @@
-import { IVectorCalculator } from "@utils/vector-calculator/vectorCalculatorInterfaces";
+import {
+	IVectorCalculator,
+	TVector,
+} from "@utils/vector-calculator/vectorCalculatorInterfaces";
 import { getRadiansBetweenVectors } from "@utils/vector-calculator/operations/vectorOps";
 import {
 	getRotationMatrix,
@@ -8,7 +11,11 @@ import {
 	matrixToVector3D,
 	vectorToMatrix,
 } from "@utils/vector-calculator/operations/matrixOps";
-import { isNullVector } from "@utils/vector-calculator/operations/vector";
+import {
+	getOppositeVector,
+	isNullVector,
+	normalizeVector,
+} from "@utils/vector-calculator/operations/vector";
 import {
 	getDegreesFromRadians,
 	getRadiansFromDegrees,
@@ -23,4 +30,6 @@ export const vectorCalculator: IVectorCalculator = {
 	multiplyMatrices,
 	vectorToMatrix,
 	matrixToVector3D,
+	getOppositeVector,
+	normalizeVector,
 };

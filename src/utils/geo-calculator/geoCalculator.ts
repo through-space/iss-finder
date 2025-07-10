@@ -1,12 +1,15 @@
 import { IGeoCalculator } from "./geoCalculatorInterfaces";
 import {
+	getEnuToEcefRotationMatrix,
 	getErrorMessage,
-	getPositionVector,
+	getGeoPositionVector,
 	getVisibilityScore,
 } from "./geoCalculatorConsts";
 
 export const geoCalculator: IGeoCalculator = {
-	getPositionVector,
+	getGeoPositionVector,
 	getVisibilityScore,
+	getEnuToEcefRotationMatrix,
+	// getEnuRotationMatrix,
 	getErrorMessage,
 };

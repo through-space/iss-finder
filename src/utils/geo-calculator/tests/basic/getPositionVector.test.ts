@@ -1,10 +1,13 @@
 import { describe, expect, test } from "vitest";
 import { IGeoPosition } from "@common-types/positionTypes";
-import { T3DVector } from "@utils/vector-calculator/vectorCalculatorInterfaces";
-import { getPositionVector } from "@utils/geo-calculator/geoCalculatorConsts";
+import {
+	T3DVector,
+	TVector,
+} from "@utils/vector-calculator/vectorCalculatorInterfaces";
+import { getGeoPositionVector } from "@utils/geo-calculator/geoCalculatorConsts";
 
 expect.extend({
-	toBeEqualPositionVectors(received: T3DVector, expected: T3DVector) {
+	toBeEqualPositionVectors(received: TVector, expected: TVector) {
 		const threshold = 1e-6;
 
 		const pass = received.every(
@@ -27,22 +30,22 @@ const testLocations: {
 	{
 		name: "Null Island",
 		position: { latitude: 0, longitude: 0 },
-		vector: [1, 0, 0],
+		vector: [6378137, 0, 0],
 	},
 	{
 		name: "North Pole",
 		position: { latitude: 90, longitude: 0 },
-		vector: [0, 0, 1],
+		vector: [0, 0, 6356752.314245184],
 	},
 	{
 		name: "South Pole",
 		position: { latitude: -90, longitude: 0 },
-		vector: [0, 0, -1],
+		vector: [0, 0, -6356752.314245184],
 	},
 	{
 		name: "Greenwich",
 		position: { latitude: 51.49, longitude: 0 },
-		vector: [0.622651218, 0, 0.78249949],
+		vector: [3979519.182354739, 0, 4967669.785605569],
 	},
 ];
 
@@ -50,7 +53,7 @@ describe("Testing GeoLocation to 3d Vector conversion", () => {
 	test.each(testLocations)(
 		"$name: $position ----> $vector",
 		({ position, vector }) => {
-			expect(getPositionVector(position)).toBeEqualPositionVectors(
+			expect(getGeoPositionVector(position)).toBeEqualPositionVectors(
 				vector,
 			);
 		},

@@ -1,10 +1,10 @@
 import "vitest";
 import { IGeoPosition } from "@common-types/positionTypes";
-import { T3DVector } from "@utils/vector-calculator/vectorCalculatorInterfaces";
+import { TVector } from "@utils/vector-calculator/vectorCalculatorInterfaces";
 
 interface CustomMatchers<R = unknown> {
 	toBeEqualLocations: (expected: IGeoPosition) => R;
-	toBeEqualPositionVectors: (expected: T3DVector) => R;
+	toBeEqualPositionVectors: (expected: TVector) => R;
 	toBeSomething: (expected: number) => R;
 }
 

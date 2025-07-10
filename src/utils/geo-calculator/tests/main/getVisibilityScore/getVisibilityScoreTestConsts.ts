@@ -43,15 +43,6 @@ export const getGeoPositionFromGMapsFormat = (
 	};
 };
 
-export const getRandomPosition = (): IGeoPosition => {
-	const randomAngle = () => Math.random() * 360 - 180;
-
-	return {
-		latitude: randomAngle(),
-		longitude: randomAngle(),
-	};
-};
-
 export const getOppositeAngle = (degrees: number): number => {
 	return ((degrees + 360) % 360) - 180;
 };

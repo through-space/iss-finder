@@ -15,11 +15,11 @@ const dimensions = ["alpha", "beta", "gamma"];
 
 export const isSameOrientation = (
 	prevOrientation: IDeviceOrientation,
-	curOrientation: IDeviceOrientation,
+	newOrientation: IDeviceOrientation,
 ): boolean => {
 	return dimensions.every(
 		(dimension) =>
-			Math.abs(curOrientation[dimension] - prevOrientation[dimension]) <
+			Math.abs(newOrientation[dimension] - prevOrientation[dimension]) <
 			ORIENTATION_CHANGE_TOLERANCE,
 	);
 };
