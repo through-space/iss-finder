@@ -4,23 +4,28 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import { IMapProps } from "./MapInterfaces";
 import { DEFAULT_MAP_PROPS } from "./MapConsts";
 import { MapWrapper } from "@ui-components/molecules/Map/MapStyledComponents";
+import { LatLngExpression } from "leaflet";
 
 export const Map: FC<IMapProps> = (props) => {
 	const {
-		// center = DEFAULT_MAP_PROPS.center,
+		center = DEFAULT_MAP_PROPS.center,
 		zoom = DEFAULT_MAP_PROPS.zoom,
 		markers,
 	} = props;
 
-	// const mapCenter = center ?? DEFAULT_MAP_PROPS.center;
+	const mapCenter = [
+		center.latitude,
+		center.longitude,
+		center.altitude,
+	] as LatLngExpression;
 
 	return (
 		<MapWrapper>
 			<MapContainer
-				center={[0, 0]}
+				center={mapCenter}
 				zoom={zoom}
 				scrollWheelZoom={false}
-				// style={{ width: "100%" }}
+				style={{ width: "100%", height: "100%" }}
 				className={"grow"}
 			>
 				<TileLayer

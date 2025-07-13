@@ -36,6 +36,10 @@ export const useDeviceOrientation = () => {
 				orientation.current = newOrientation;
 			}
 
+			console.log("current orientation");
+			console.log(orientation.current);
+			console.log("new orientation");
+			console.log(newOrientation);
 			if (isSameOrientation(orientation.current, newOrientation)) {
 				console.log("same orientation");
 				return;

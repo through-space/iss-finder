@@ -1,7 +1,4 @@
-import {
-	IVectorCalculator,
-	TVector,
-} from "@utils/vector-calculator/vectorCalculatorInterfaces";
+import { IVectorCalculator } from "@utils/vector-calculator/vectorCalculatorInterfaces";
 import { getRadiansBetweenVectors } from "@utils/vector-calculator/operations/vectorOps";
 import {
 	getRotationMatrix,

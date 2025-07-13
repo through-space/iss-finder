@@ -2,6 +2,7 @@ import { FC } from "react";
 import { useDeviceStateStore } from "@stores/deviceStateStore/deviceStateStore";
 import { geoCalculator } from "@utils/geo-calculator/geoCalculator";
 import { useIssStateStore } from "@stores/issStateStore/issStateStore";
+import { getRadiansBetweenVectors } from "@utils/vector-calculator/operations/vectorOps";
 
 export const DirectionGuide: FC = () => {
 	const deviceOrientation = useDeviceStateStore((state) => state.orientation);
@@ -11,9 +12,26 @@ export const DirectionGuide: FC = () => {
 	const issPosition = useIssStateStore((state) => state.currentPosition);
 	const devicePosition = useDeviceStateStore((state) => state.position);
 
+	if (!issPosition) {
+		//TODO
+		return;
+	}
+
+	if (!devicePosition) {
+		//TODO
+		return;
+	}
+
 	const devicePositionVector =
 		geoCalculator.getGeoPositionVector(devicePosition);
 	const issPositionVector = geoCalculator.getGeoPositionVector(issPosition);
+
+	// console.log(issPositionVector);
+	// console.log(devicePositionVector);
+	// console.log(
+	// 	"difference:",
+	// 	getRadiansBetweenVectors(issPositionVector, devicePositionVector),
+	// );
 
 	const getRoundedVectorComponent = (angle: number) => {
 		const roundFactor = 1e3;
@@ -21,7 +39,7 @@ export const DirectionGuide: FC = () => {
 	};
 
 	return (
-		<>
+		<div>
 			<>
 				<h5>device orientation</h5>
 				<ul>
@@ -81,6 +99,6 @@ export const DirectionGuide: FC = () => {
 					</>
 				)}
 			</>
-		</>
+		</div>
 	);
 };
