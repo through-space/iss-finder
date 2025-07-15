@@ -1,6 +1,7 @@
 import L, { IconOptions } from "leaflet";
 import issIcon from "@assets/icons/iss-icon.svg";
 import deviceIcon from "@assets/icons/house-color-icon.svg";
+import crosshairIcon from "@assets/icons/crosshair.svg";
 
 const defaultMapIconSettings: IconOptions = {
 	iconUrl: "",
@@ -20,4 +21,9 @@ export const ISSIcon = L.icon({
 export const DeviceIcon = L.icon({
 	...defaultMapIconSettings,
 	iconUrl: deviceIcon,
+});
+
+export const CrossHairIcon = L.icon({
+	...defaultMapIconSettings,
+	iconUrl: crosshairIcon,
 });

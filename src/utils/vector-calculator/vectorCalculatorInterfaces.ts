@@ -21,4 +21,6 @@ export interface IVectorCalculator {
 	matrixToVector3D: (matrix: TMatrix) => T3DVector;
 	getOppositeVector: (vector: TVector) => TVector;
 	normalizeVector: (vector: TVector) => TVector;
+	getVectorsSum: (a: TVector, b: TVector) => TVector;
+	scaleVector: (vector: TVector, scalar: number) => TVector;
 }

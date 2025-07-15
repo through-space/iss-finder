@@ -12,6 +12,7 @@ export const useDeviceOrientation = () => {
 	);
 	const saveDirection = useDeviceStateStore((state) => state.updateDirection);
 	const orientation = useRef<IDeviceOrientation | null>(null);
+	const hasInitialized = useRef(false);
 
 	const debouncedSaveOrientation = useDebouncedCallback(
 		(orientation, direction) => {
@@ -36,10 +37,10 @@ export const useDeviceOrientation = () => {
 				orientation.current = newOrientation;
 			}
 
-			console.log("current orientation");
-			console.log(orientation.current);
-			console.log("new orientation");
-			console.log(newOrientation);
+			// console.log("current orientation");
+			// console.log(orientation.current);
+			// console.log("new orientation");
+			// console.log(newOrientation);
 			if (isSameOrientation(orientation.current, newOrientation)) {
 				console.log("same orientation");
 				return;
@@ -57,6 +58,12 @@ export const useDeviceOrientation = () => {
 	);
 
 	useEffect(() => {
+		if (hasInitialized.current) {
+			return;
+		}
+
+		hasInitialized.current = true;
+
 		const stopOrientationTracking =
 			deviceStateService.startOrientationTracking(updateOrientation);
 		return () => {

@@ -3,14 +3,19 @@ import { useDeviceStateStore } from "@stores/deviceStateStore/deviceStateStore";
 import { geoCalculator } from "@utils/geo-calculator/geoCalculator";
 import { useIssStateStore } from "@stores/issStateStore/issStateStore";
 import { getRadiansBetweenVectors } from "@utils/vector-calculator/operations/vectorOps";
+import { vectorCalculator } from "@utils/vector-calculator/vectorCalculator";
 
 export const DirectionGuide: FC = () => {
 	const deviceOrientation = useDeviceStateStore((state) => state.orientation);
 	const cameraDirectionVector = useDeviceStateStore(
 		(state) => state.direction,
 	);
-	const issPosition = useIssStateStore((state) => state.currentPosition);
+
 	const devicePosition = useDeviceStateStore((state) => state.position);
+	const issPosition = useIssStateStore((state) => state.currentPosition);
+
+	// const issPosition = devicePosition;
+	// issPosition.latitude = devicePosition;
 
 	if (!issPosition) {
 		//TODO
@@ -24,7 +29,31 @@ export const DirectionGuide: FC = () => {
 
 	const devicePositionVector =
 		geoCalculator.getGeoPositionVector(devicePosition);
+
+	// const issPositionVector = geoCalculator.getGeoPositionVector(issPosition);
+	// const fakeIssPositionVector = [0, 0, 0];
+
 	const issPositionVector = geoCalculator.getGeoPositionVector(issPosition);
+	// console.log(issPositionVector);
+
+	const directionVector = vectorCalculator.getVectorsSum(
+		issPositionVector,
+		vectorCalculator.getOppositeVector(devicePositionVector),
+	);
+	// console.log("directionVector", directionVector);
+
+	const directionVectorNormalized =
+		vectorCalculator.normalizeVector(directionVector);
+	// console.log("directionVectorNormalized", directionVectorNormalized);
+
+	// const vectorsDifference = vectorCalculator.getDegreesFromRadians(
+	// 	,
+	// );
+	//
+	// console.log(
+	// 	"difference:",
+	// 	getRadiansBetweenVectors(vectorsDifference, devicePositionVector),
+	// );
 
 	// console.log(issPositionVector);
 	// console.log(devicePositionVector);

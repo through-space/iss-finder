@@ -8,10 +8,11 @@ export const useIssTracker = () => {
 	);
 
 	useEffect(() => {
-		const stopLocationTracking =
-			ISSLocationService.startLocationTracking(storeLocation);
-		return () => {
-			stopLocationTracking();
-		};
+		// const stopLocationTracking =
+		// 	ISSLocationService.startLocationTracking(storeLocation);
+		// return () => {
+		// 	stopLocationTracking();
+		// };
+		storeLocation({ latitude: 0, longitude: 0 });
 	}, [storeLocation]);
 };

@@ -193,43 +193,40 @@ export const getGeoPositionVector = (position: IGeoPosition): T3DVector => {
 	return [x, y, z];
 };
 
-// export const getGeoPositionVectorGPT = (position: IGeoPosition): T3DVector => {
-// 	const a = 6378137.0; // WGS84 equatorial radius
-// 	const e2 = 6.69437999014e-3; // eccentricity squared
-//
-// 	const lat = vectorCalculator.getRadiansFromDegrees(position.latitude);
-// 	const lon = vectorCalculator.getRadiansFromDegrees(position.longitude);
-// 	const alt = position?.altitude ?? 0;
-//
-// 	const sinLat = Math.sin(lat);
-// 	const cosLat = Math.cos(lat);
-// 	const sinLon = Math.sin(lon);
-// 	const cosLon = Math.cos(lon);
-//
-// 	const N = a / Math.sqrt(1 - e2 * sinLat * sinLat);
-//
-// 	const x = (N + alt) * cosLat * cosLon;
-// 	const y = (N + alt) * cosLat * sinLon;
-// 	const z = (N * (1 - e2) + alt) * sinLat;
-//
-// 	return [x, y, z];
-// };
+export const getGeoPositionFromVector = (vector: T3DVector): IGeoPosition => {
+	const [x, y, z] = vector;
 
-// export const getGeoPositionVector_old = (position: IGeoPosition): T3DVector => {
-// 	if (
-// 		!position ||
-// 		position.latitude === null ||
-// 		position.longitude === null
-// 	) {
-// 		return [null, null, null];
-// 	}
-//
-// 	return vectorCalculator.matrixToVector3D(
-// 		vectorCalculator.multiplyMatrices(getEnuRotationMatrix(position), [
-// 			Array.from({ length: 3 }, () => 1),
-// 		]),
-// 	);
-// };
+	const a = 6378137.0; // WGS84 equatorial radius
+	const e2 = 6.69437999014e-3; // eccentricity squared
+	const b = a * Math.sqrt(1 - e2); // semi-minor axis
+
+	const ep = Math.sqrt((a ** 2 - b ** 2) / b ** 2);
+	const p = Math.sqrt(x * x + y * y);
+	const theta = Math.atan2(z * a, p * b);
+
+	const sinTheta = Math.sin(theta);
+	const cosTheta = Math.cos(theta);
+
+	const lat = Math.atan2(
+		z + ep ** 2 * b * sinTheta ** 3,
+		p - e2 * a * cosTheta ** 3,
+	);
+	const lon = Math.atan2(y, x);
+
+	const sinLat = Math.sin(lat);
+	const N = a / Math.sqrt(1 - e2 * sinLat * sinLat);
+	const alt = p / Math.cos(lat) - N;
+
+	// Convert radians back to degrees
+	const latitude = vectorCalculator.getDegreesFromRadians(lat);
+	const longitude = vectorCalculator.getDegreesFromRadians(lon);
+
+	return {
+		latitude,
+		longitude,
+		altitude: alt,
+	};
+};
 
 const getRandomPosition = (): IGeoPosition => {
 	const randomAngle = () => Math.random() * 360 - 180;

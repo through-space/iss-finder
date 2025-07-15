@@ -10,6 +10,7 @@ export interface IGeoCalculator {
 	// getEnuRotationMatrix: (position: IGeoPosition) => TMatrix;
 	getEnuToEcefRotationMatrix: (position: IGeoPosition) => TMatrix;
 	getGeoPositionVector: (position: IGeoPosition) => T3DVector;
+	getGeoPositionFromVector: (vector: T3DVector) => IGeoPosition;
 	// getGeoPositionVectorGPT: (position: IGeoPosition) => T3DVector;
 }
 

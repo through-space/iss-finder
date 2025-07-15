@@ -9,7 +9,7 @@ import {
 } from "@utils/vector-calculator/operations/vector";
 import { getDotProduct } from "@utils/vector-calculator/operations/matrix";
 
-export const getVectorsSum = (a: TVector, b: TVector) => {
+export const getVectorsSum = (a: TVector, b: TVector): TVector => {
 	if (a.length !== b.length) {
 		throw new Error(
 			getErrorMessage(EVectorCalculatorErrorType.DIMENSIONS_DISMATCH),

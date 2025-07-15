@@ -17,6 +17,12 @@ export const getOppositeVector = (vector: TVector): TVector => {
 	});
 };
 
+export const scaleVector = (vector: TVector, scalar: number): TVector => {
+	return vector.map((component) => {
+		return component * scalar;
+	});
+};
+
 export const normalizeVector = (vector: TVector): TVector => {
 	const length = Math.hypot(...vector);
 	return vector.map((component) => component / length);
