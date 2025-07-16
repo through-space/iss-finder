@@ -1,4 +1,4 @@
-import { IMapProps } from "./MapInterfaces";
+import { ILeafletMapProps } from "./LeafletMapInterfaces";
 import { IGeoPosition } from "@common-types/positionTypes";
 
 const DEFAULT_MAP_CENTER: IGeoPosition = {
@@ -6,7 +6,8 @@ const DEFAULT_MAP_CENTER: IGeoPosition = {
 	longitude: 0,
 };
 
-export const DEFAULT_MAP_PROPS: IMapProps = {
+export const DEFAULT_MAP_PROPS: ILeafletMapProps = {
 	center: DEFAULT_MAP_CENTER,
 	zoom: 1,
+	markers: [],
 };

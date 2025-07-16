@@ -1,19 +1,14 @@
 import { useDeviceStateStore } from "@stores/deviceStateStore/deviceStateStore";
 import { useIssStateStore } from "@stores/issStateStore/issStateStore";
-import { Marker, Popup } from "react-leaflet";
-import {
-	CrossHairIcon,
-	DeviceIcon,
-	ISSIcon,
-} from "@ui-components/atoms/MapComponents/ISSIcons";
-import React from "react";
-import { Map } from "@ui-components/molecules/Map/Map";
+import React, { FC, useMemo } from "react";
+import { LeafletMap } from "@ui-components/molecules/LeafletMap/LeafletMap";
 import { geoCalculator } from "@utils/geo-calculator/geoCalculator";
 import { vectorCalculator } from "@utils/vector-calculator/vectorCalculator";
 import { T3DVector } from "@utils/vector-calculator/vectorCalculatorInterfaces";
 import { IGeoPosition } from "@common-types/positionTypes";
+import { getMarkers } from "@features/WorldMap/WorldMapConsts";
 
-export const WorldMap = () => {
+export const WorldMap: FC = () => {
 	const issPosition = useIssStateStore((state) => {
 		return state.currentPosition;
 	});
@@ -24,11 +19,20 @@ export const WorldMap = () => {
 	 */
 	const deviceDirection = useDeviceStateStore((state) => state.direction);
 
+	const center = useMemo(() => {
+		if (!devicePosition) return { latitude: 0, longitude: 0 };
+		return {
+			latitude: devicePosition.latitude,
+			longitude: devicePosition.longitude,
+		};
+	}, [devicePosition]);
+
 	let devicePointingPosition: IGeoPosition | null = null;
+
 	if (deviceDirection) {
 		const deviceDirectionScaled = vectorCalculator.scaleVector(
 			deviceDirection,
-			100000,
+			1e7,
 		);
 		const devicePositionVector =
 			geoCalculator.getGeoPositionVector(devicePosition);
@@ -48,41 +52,18 @@ export const WorldMap = () => {
 		devicePointingPosition = null;
 	}
 
-	console.log("devicePointingPosition", devicePointingPosition);
+	// console.log("devicePointingPosition", devicePointingPosition);
 	/******/
 
-	const markers = [
-		devicePointingPosition && (
-			<Marker
-				key="devicePointingPosition"
-				position={[
-					devicePointingPosition.latitude,
-					devicePointingPosition.longitude,
-				]}
-				icon={CrossHairIcon}
-			>
-				<Popup>Pointing</Popup>
-			</Marker>
-		),
-		devicePosition && (
-			<Marker
-				key="devicePosition"
-				position={[devicePosition.latitude, devicePosition.longitude]}
-				icon={DeviceIcon}
-			>
-				<Popup>This is you</Popup>
-			</Marker>
-		),
-		issPosition && (
-			<Marker
-				key="issPosition"
-				position={[issPosition.latitude, issPosition.longitude]}
-				icon={ISSIcon}
-			>
-				<Popup>This is ISS</Popup>
-			</Marker>
-		),
-	].filter((marker) => !!marker);
+	const markers = useMemo(
+		() =>
+			getMarkers({
+				issPosition,
+				devicePosition,
+				devicePointingPosition,
+			}),
+		[devicePosition, issPosition, devicePointingPosition],
+	);
 
-	return <Map center={devicePosition} markers={markers} zoom={8} />;
+	return <LeafletMap center={center} zoom={5} markers={markers} />;
 };

@@ -1,15 +1,28 @@
 import { useMap } from "react-leaflet";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 
 export interface IRecentMapProps {
 	center: [number, number];
 	zoom: number;
 }
-export const RecenterMap = ({ center, zoom }: IRecentMapProps) => {
+
+export const RecenterMap = memo(({ center, zoom }: IRecentMapProps) => {
 	const map = useMap();
 
+	console.log("rendering RecenterMap");
+
 	useEffect(() => {
+		// if (!center) {
+		// 	return;
+		// }
+
 		const handleResize = () => {
+			if (!center) {
+				console.log("no center");
+				return;
+			}
+
+			console.log("recenter map");
 			map.invalidateSize();
 			map.setView(center, zoom);
 		};
@@ -21,4 +34,4 @@ export const RecenterMap = ({ center, zoom }: IRecentMapProps) => {
 	}, [map, center, zoom]);
 
 	return null;
-};
+});

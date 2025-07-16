@@ -6,9 +6,7 @@ import crosshairIcon from "@assets/icons/crosshair.svg";
 const defaultMapIconSettings: IconOptions = {
 	iconUrl: "",
 	iconSize: [20, 20],
-	// iconAnchor: [22, 94],
 	popupAnchor: [-3, -76],
-	// shadowUrl: 'my-icon-shadow.png',
 	shadowSize: [68, 95],
 	shadowAnchor: [22, 94],
 };
