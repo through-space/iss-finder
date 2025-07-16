@@ -18,11 +18,9 @@ export const RecenterMap = memo(({ center, zoom }: IRecentMapProps) => {
 
 		const handleResize = () => {
 			if (!center) {
-				console.log("no center");
 				return;
 			}
 
-			console.log("recenter map");
 			map.invalidateSize();
 			map.setView(center, zoom);
 		};
